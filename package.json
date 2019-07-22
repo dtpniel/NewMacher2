@@ -1,0 +1,38 @@
+{
+  "name": "MacherJobs1",
+  "version": "1.0.0",
+  "description": "New Macher Jobs",
+  "author": "Diti Pniel",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "dev-debug": "node --inspect node_modules/nuxt/bin/nuxt",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@nuxtjs/auth": "^4.8.1",
+    "@nuxtjs/axios": "^5.0.0",
+    "@nuxtjs/toast": "^3.2.1",
+    "@ttskch/select2-bootstrap4-theme": "^1.0.5",
+    "@types/select2": "^4.0.47",
+    "body-parser": "^1.18.3",
+    "bootstrap-select": "^1.12.4",
+    "bootstrap-vue": "^2.0.0-beta",
+    "cross-env": "^5.2.0",
+    "jquery": "^3.3.1",
+    "mobile-detect": "^1.4.3",
+    "moment": "^2.23.0",
+    "mssql": "^4.3.0",
+    "nuxt": "^2.3.4",
+    "setimmediate": "^1.0.5",
+    "vue-meta": "^1.6.0",
+    "vuex-map-fields": "^1.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
