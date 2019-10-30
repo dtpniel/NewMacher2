@@ -16,21 +16,30 @@ export default {
       id: this.$route.params.id
     };
   },
-    computed: {
+  components: { SingleJob },
+  validate({ params }) {
+    // Must be a number
+    return /^\d+$/.test(params.id);
+  },
+  methods: {
+    show: function() {}
+  },
+
+  computed: {
     ...mapState("jobs", {
       metaTags: state => state.metaTags
     })
   },
 
-  validate({ params }) {
-    // Must be a number
-    return /^\d+$/.test(params.id);
-  },
   async asyncData({ app, params, store }) {
-    var id = app.context.route.id;
+    var id = params.id;
+    var query = app.context.route.query;
+    var archive = query.archive;
+    if (!archive) archive = 0;
 
+    var jobParams = { archive: archive, id: id };
     await store.dispatch("jobs/getSingleJob", {
-      id: id
+      jobParams
     });
   },
 
@@ -38,12 +47,8 @@ export default {
     return {
       title: this.metaTags.title,
       link: [{ rel: "canonical", href: this.metaTags.canonical }],
-      meta: this.createMetaTags(this.metaTags)
+      meta:this.createMetaTags(this.metaTags)
     };
-  },
-
-  methods: {
-    show: function() {}
   }
 };
 </script>

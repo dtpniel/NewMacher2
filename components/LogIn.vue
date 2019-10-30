@@ -35,17 +35,18 @@
             </div>
 
             <!-- Form -->
-            <form method="post" id="login-form">
+            <form method="post" id="login-form" @submit.prevent="logIn">
               <div class="input-with-icon-left">
                 <i class="icon-material-baseline-mail-outline"></i>
                 <input
                   type="text"
                   class="input-text with-border"
-                  name="emailaddress"
-                  id="emailaddress"
+                  name="email"
+                  id="email"
+                  v-model="email"
                   placeholder="Email Address"
                   required
-                >
+                />
               </div>
 
               <div class="input-with-icon-left">
@@ -55,9 +56,10 @@
                   class="input-text with-border"
                   name="password"
                   id="password"
+                  v-model="password"
                   placeholder="Password"
                   required
-                >
+                />
               </div>
               <a href="#" class="forgot-password">Forgot Password?</a>
             </form>
@@ -95,5 +97,28 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    async logIn(evt) {
+      const credentials = {
+        email: this.email,
+        password: this.password
+      }
+      try {
+        await this.$auth.loginWith('local', {
+          data: credentials
+        })
+        this.$router.push('/')
+      } catch (e) {
+        this.$router.push('/login')
+      }
+    }
+  }
+}
 </script>

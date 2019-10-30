@@ -737,6 +737,11 @@ export default {
   },
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser"])
+  },
+    mounted() {
+    if (process.browser) {
+      initialCustom();
+    }
   }
 };
 </script>

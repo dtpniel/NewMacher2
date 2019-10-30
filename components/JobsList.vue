@@ -165,7 +165,7 @@ export default {
 
   mounted() {
     if (process.browser) {
-      initialCustom();
+     // initialCustom();
          this.scroll();
     }
   }

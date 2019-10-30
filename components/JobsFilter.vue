@@ -2,7 +2,7 @@
   <div class="sidebar-container">
     <!-- filter items -->
     <div class="row">
-      <filter-items :items="filterItems" @reset="reset" @removeFilterItem="removeFilterItem"/>
+      <filter-items :items="filterItems" @reset="reset" @removeFilterItem="removeFilterItem" />
       <div class="clearfix"></div>
     </div>
     <!-- Location -->
@@ -52,7 +52,7 @@
       <h3>Keywords</h3>
       <div class="keywords-container">
         <div class="keyword-input-container">
-          <input type="text" class="keyword-input" v-model="freeText" placeholder="e.g. job title">
+          <input type="text" class="keyword-input" v-model="freeText" placeholder="e.g. job title" />
           <button class="keyword-input-button ripple-effect" @click="setFilter($event,'freeText')">
             <i class="icon-material-outline-add" id="freeText"></i>
           </button>
@@ -113,7 +113,7 @@
       <div class="switches-list">
         <div class="switch-container">
           <label class="switch">
-            <input type="checkbox" id="freelance" v-model="freelance" @change="setFilter($event)">
+            <input type="checkbox" id="freelance" v-model="freelance" @change="setFilter($event)" />
             <span class="switch-button"></span>
             Freelance
           </label>
@@ -121,27 +121,27 @@
 
         <div class="switch-container">
           <label class="switch">
-            <input type="checkbox" id="fromHome" v-model="fromHome" @change="setFilter($event)">
+            <input type="checkbox" id="fromHome" v-model="fromHome" @change="setFilter($event)" />
             <span class="switch-button"></span> From Home
           </label>
         </div>
 
         <div class="switch-container">
           <label class="switch">
-            <input type="checkbox" id="partTime" v-model="partTime" @change="setFilter($event)">
+            <input type="checkbox" id="partTime" v-model="partTime" @change="setFilter($event)" />
             <span class="switch-button"></span> Part Time
           </label>
         </div>
 
         <div class="switch-container">
           <label class="switch">
-            <input type="checkbox" id="internship" v-model="internship" @change="setFilter($event)">
+            <input type="checkbox" id="internship" v-model="internship" @change="setFilter($event)" />
             <span class="switch-button"></span> Internship
           </label>
         </div>
         <div class="switch-container">
           <label class="switch">
-            <input type="checkbox" id="temporary" v-model="temporary" @change="setFilter($event)">
+            <input type="checkbox" id="temporary" v-model="temporary" @change="setFilter($event)" />
             <span class="switch-button"></span> Temporary
           </label>
         </div>
@@ -239,7 +239,7 @@ export default {
 
       var arr = this[name + "Data"];
 
-           var selected = arr ? arr.filter(x => x.id == id)[0] : undefined;
+      var selected = arr ? arr.filter(x => x.id == id)[0] : undefined;
       var text = selected ? selected.name : "";
       if (name == "freeText") text = id;
 
@@ -324,13 +324,15 @@ export default {
 
   updated: function() {
     this.$nextTick(function() {
-      $(".selectpicker").selectpicker("refresh");
+       require("bootstrap-select");
+          $(this.$el).find('.selectpicker').selectpicker('refresh');
+      //$(".selectpicker").selectpicker("refresh");
     });
   },
   mounted() {
     if (process.browser) {
-      require("bootstrap-select");
-      $(".selectpicker").selectpicker("refresh");
+     require("bootstrap-select");
+     $(".selectpicker").selectpicker("refresh");
     }
     if (this.mainCategoryId > 0) {
       $("#mainCategoryId").val(this.mainCategoryId);

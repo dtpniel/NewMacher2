@@ -1,33 +1,24 @@
 import webpack from 'webpack'
+//import global from 'plugins/config'
+
+var global =
+{
+  facebookKey: "836797929683024",
+  googleKey: "194392922882-jkdlkc4n44036jh97j2foatcaidh68of.apps.googleusercontent.com"
+};
 
 module.exports = {
   mode: 'universal',
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000',
     baseApi: 'http://localhost:3000' + "/api"
+
   },
   router: {
     base: '/',
     prefetchLinks: true
 
   },
-  generate: {
-    concurrency: 10
-  },
-
-  auth: {
-    strategies: {
-      local:false
-      // local: {
-      //   endpoints: {
-      //     login: { url: 'login', method: 'post', propertyName: 'data.token' },
-      //     user: { url: 'me', method: 'get', propertyName: 'data' },
-      //     logout: false
-      //   }
-      // }
-    }
-  },
-
 
   toast: {
     position: 'top-center',
@@ -66,7 +57,7 @@ module.exports = {
       { src: '/js/tippy.all.min.js' },
       { src: '/js/simplebar.min.js' },
       { src: '/js/bootstrap-slider.min.js' },
-      //{ src: '/js/bootstrap-select.min.js' },
+      // { src: '/js/bootstrap-select.min.js' },
       //{ src: '/node_modules/vue-bootstrap-selectpicker/dist/js/vue-bootstrap-selectpicker.js' },
       { src: '/js/snackbar.js' },
       { src: '/js/clipboard.min.js' },
@@ -97,7 +88,34 @@ module.exports = {
     '~plugins/mixins.js'
     //   { src: '~plugins/vue-select', ssr: false }
   ],
-
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: 'user/login', method: 'post', propertyName: 'token' },
+          logout: false,
+          user: { url: 'user/user', method: 'get', propertyName: 'data' },
+        },
+      },
+      local: false,
+      facebook: {
+        client_id: global.facebookKey,
+        userinfo_endpoint: 'https://graph.facebook.com/v2.12/me?fields=about,name,picture{url},email',
+        scope: ['public_profile', 'email']
+      },
+      google: {
+        client_id: global.googleKey
+      },
+    },
+    redirect: {
+      login: '/?login=1',
+      logout: '/',
+      user: '/user/me',
+      callback: '/'
+    },
+    tokenRequired: false,
+    tokenType: false
+  },
   /*
   ** Nuxt.js modules
   */
@@ -106,14 +124,15 @@ module.exports = {
     '@nuxtjs/axios',
     // Doc: https://bootstrap-vue.js.org/docs/
     ['bootstrap-vue/nuxt', { css: false }],
-    '@nuxtjs/toast'
-
+    '@nuxtjs/toast',
+    '@nuxtjs/auth'
   ],
   serverMiddleware: ['~/api/index.js'],
   /*
   ** Axios module configuration
   */
   axios: {
+    baseUrl: 'http://localhost:3000' + "/api"
 
     // See https://github.com/nuxt-community/axios-module#options
   },
@@ -131,10 +150,10 @@ module.exports = {
         'jQuery': 'jquery',
         'window.jQuery': 'jquery'
       })
-      // ,
-      // new webpack.ProvidePlugin({
-      //   'select': 'bootstrap-select'
-      // })
+      ,
+      new webpack.ProvidePlugin({
+        'selectpicker': 'bootstrap-select'
+      })
     ],
     extractCSS: true,
     extend(config, { isClient }) {

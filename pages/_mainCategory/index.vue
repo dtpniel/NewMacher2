@@ -52,7 +52,11 @@ export default {
       route: app.context.route
     });
   },
-
+ mounted() {
+    if (process.browser) {
+     require("bootstrap-select");
+    }
+ },
   head() {
     return {
       title: this.metaTags.title,
