@@ -118,7 +118,7 @@ app.post('/categories', function (req, res) {
   )
 });
 
-app.post('user/register', function (req, res) {
+app.post('/user/register', function (req, res) {
   var user = req.body["user"];
 
   // query to the database and get the data
@@ -129,7 +129,7 @@ app.post('user/register', function (req, res) {
   )
 });
 
-app.post('user/login', function (req, res) {
+app.post('/user/login', function (req, res) {
   var user = req.body["user"];
 
   // query to the database and get the data
@@ -141,7 +141,7 @@ app.post('user/login', function (req, res) {
 });
 
 
-app.get('user/login', function (req, res) {
+app.get('/user/user', function (req, res) {
   var user = req.body["user"];
 
   // query to the database and get the data

@@ -4,7 +4,7 @@ import webpack from 'webpack'
 var global =
 {
   facebookKey: "836797929683024",
-  googleKey: "194392922882-jkdlkc4n44036jh97j2foatcaidh68of.apps.googleusercontent.com"
+  googleKey: "194392922882-jpo7oj514o4t3puive3oen7r922tk4ce.apps.googleusercontent.com"
 };
 
 module.exports = {
@@ -92,27 +92,33 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-          login: { url: 'user/login', method: 'post', propertyName: 'token' },
+          login: { url: '/user/login', method: 'post', propertyName: 'token' },
           logout: false,
-          user: { url: 'user/user', method: 'get', propertyName: 'data' },
+          user: { url: '/user/user', method: 'get', propertyName: false },
         },
       },
-      local: false,
+      //local:false,
       facebook: {
         client_id: global.facebookKey,
-        userinfo_endpoint: 'https://graph.facebook.com/v2.12/me?fields=about,name,picture{url},email',
-        scope: ['public_profile', 'email']
+        userinfo_endpoint: 'https://graph.facebook.com/v2.12/me',
+        scope: ['public_profile', 'email'],
+        dispaly:'popup',
+        redirect_uri: 'http://localhost:3000/login'
       },
       google: {
-        client_id: global.googleKey
+        client_id: global.googleKey,
+        scope: ['profile', 'email'],
+        redirect_uri: 'http://localhost:3000/login'
       },
     },
     redirect: {
-      login: '/?login=1',
+      login: '/login',
       logout: '/',
-      user: '/user/me',
-      callback: '/'
+      callback: '/login',
+      home: false
     },
+    localStorage: false,
+    watchLoggedIn: false,
     tokenRequired: false,
     tokenType: false
   },
@@ -132,7 +138,8 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    baseUrl: 'http://localhost:3000' + "/api"
+    baseURL: '/api',
+    credentials: true
 
     // See https://github.com/nuxt-community/axios-module#options
   },

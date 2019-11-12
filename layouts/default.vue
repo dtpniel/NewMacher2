@@ -12,7 +12,7 @@
             <!-- Logo -->
             <div id="logo">
               <a href="index.html">
-                <img src="images/newlogo.png" alt>
+                <img src="images/newlogo.png" alt />
               </a>
             </div>
 
@@ -20,7 +20,7 @@
             <nav id="navigation">
               <ul id="responsive">
                 <li>
-                  <a href="#">Home</a>
+                  <a href="#">Home {{$auth.loggedIn}}</a>
                   <ul class="dropdown-nav">
                     <li>
                       <a href="index.html">Home 1</a>
@@ -331,7 +331,7 @@
                         <li class="notifications-not-read">
                           <a href="dashboard-messages.html">
                             <span class="notification-avatar status-online">
-                              <img src="images/user-avatar-small-03.jpg" alt>
+                              <img src="images/user-avatar-small-03.jpg" alt />
                             </span>
                             <div class="notification-text">
                               <strong>David Peterson</strong>
@@ -347,7 +347,7 @@
                         <li class="notifications-not-read">
                           <a href="dashboard-messages.html">
                             <span class="notification-avatar status-offline">
-                              <img src="images/user-avatar-small-02.jpg" alt>
+                              <img src="images/user-avatar-small-02.jpg" alt />
                             </span>
                             <div class="notification-text">
                               <strong>Sindy Forest</strong>
@@ -363,7 +363,7 @@
                         <li class="notifications-not-read">
                           <a href="dashboard-messages.html">
                             <span class="notification-avatar status-online">
-                              <img src="images/user-avatar-placeholder.png" alt>
+                              <img src="images/user-avatar-placeholder.png" alt />
                             </span>
                             <div class="notification-text">
                               <strong>Marcin Kowalski</strong>
@@ -397,7 +397,7 @@
                 <div class="header-notifications-trigger">
                   <a href="#">
                     <div class="user-avatar status-online">
-                      <img src="images/user-avatar-small-01.jpg" alt>
+                      <img src="images/user-avatar-small-01.jpg" alt />
                     </div>
                   </a>
                 </div>
@@ -409,7 +409,7 @@
                     <!-- User Name / Avatar -->
                     <div class="user-details">
                       <div class="user-avatar status-online">
-                        <img src="images/user-avatar-small-01.jpg" alt>
+                        <img src="images/user-avatar-small-01.jpg" alt />
                       </div>
                       <div class="user-name">
                         Tom Smith
@@ -488,9 +488,9 @@
 
     <!-- Page Content
     ==================================================-->
-    <search v-if="!isHomePage()"/>
-    <top-banners v-if="!isHomePage() && !$store.getters.isMobile"/>
-    <nuxt/>
+    <search v-if="!isHomePage()" />
+    <top-banners v-if="!isHomePage() && !$store.getters.isMobile" />
+    <nuxt />
 
     <!-- Footer
     ==================================================-->
@@ -506,7 +506,7 @@
                 <div class="footer-rows-left">
                   <div class="footer-row">
                     <div class="footer-row-inner footer-logo">
-                      <img src="images/logo2.png" alt>
+                      <img src="images/logo2.png" alt />
                     </div>
                   </div>
                 </div>
@@ -698,7 +698,7 @@
               </h3>
               <p>Weekly breaking news, analysis and cutting edge advices on job searching.</p>
               <form action="#" method="get" class="newsletter">
-                <input type="text" name="fname" placeholder="Enter your email address">
+                <input type="text" name="fname" placeholder="Enter your email address" />
                 <button type="submit">
                   <i class="icon-feather-arrow-right"></i>
                 </button>
@@ -738,7 +738,7 @@ export default {
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser"])
   },
-    mounted() {
+  mounted() {
     if (process.browser) {
       initialCustom();
     }

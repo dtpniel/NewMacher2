@@ -79,10 +79,18 @@
               <span>or</span>
             </div>
             <div class="social-login-buttons">
-              <button class="facebook-login ripple-effect">
+              <button
+                class="facebook-login ripple-effect"
+                target="_blank"
+                @click.prevent="facebookLogIn"
+              >
                 <i class="icon-brand-facebook-f"></i> Log In via Facebook
               </button>
-              <button class="google-login ripple-effect">
+              <button
+                class="google-login ripple-effect"
+                target="_blank"
+                @click.prevent="googleLogIn"
+              >
                 <i class="icon-brand-google-plus-g"></i> Log In via Google+
               </button>
             </div>
@@ -100,25 +108,114 @@
 export default {
   data() {
     return {
-      email: '',
-      password: ''
-    }
+      email: "",
+      password: "",
+      socialLogin: false,
+      name: ""
+    };
   },
   methods: {
-    async logIn(evt) {
+    logIn(evt) {
       const credentials = {
         email: this.email,
-        password: this.password
-      }
+        password: this.password,
+        socialLogin: this.socialLogin,
+        name: this.name
+      };
       try {
-        await this.$auth.loginWith('local', {
-          data: credentials
-        })
-        this.$router.push('/')
+        this.$auth
+          .loginWith("local", {
+            data: { user: credentials }
+          })
+          .then(() => {
+            this.$toast.success("Logged In!");
+          })
+          .catch(e => {
+            this.$toast.error(e);
+          });
       } catch (e) {
-        this.$router.push('/login')
+        this.$router.push("/login");
       }
+    },
+
+    googleLogIn() {
+      try {
+        this.$auth
+          .loginWith("google")
+          .then(() => {
+            this.$toast.success("Logged In!");
+          })
+          .catch(e => {
+            this.$toast.error(e);
+          });
+      } catch (e) {
+        this.$router.push("/login");
+      }
+    },
+    facebookLogIn() {
+      // try {
+      //   this.$auth
+      //     .loginWith("facebook")
+      //     .then(() => {
+      //       this.$toast.success("Logged In!");
+      //     })
+      //     .catch(e => {
+      //       this.$toast.error(e);
+      //     });
+      // } catch (e) {
+      //   this.$router.push("/login");
+      // }
+      FB.login(
+        function(response) {
+          if (response.status === "connected") {
+            getFacebookUser();
+          } else if (response.status === "not_authorized") {
+            {
+              alert("Failed to log in user with facebook!");
+              $("#uploadGif").css("display", "none");
+            }
+          } else {
+            {
+              alert("Failed to log in user with facebook!");
+              $("#uploadGif").css("display", "none");
+            }
+          }
+        },
+        { scope: "public_profile,email" }
+      );
+    },
+    getFacebookUser() {
+      FB.api(
+        "/me",
+        "GET",
+        { fields: "id,name,birthday,email,about,cover" },
+        function(response) {
+          this.email = response.email;
+          this.name = response.name;
+          this.socialLogin = true;
+          this.logIn();
+        }
+      );
     }
   }
-}
+};
+
+window.fbAsyncInit = function() {
+  FB.init({
+    appId: "836797929683024",
+    xfbml: true, // parse social plugins on this page
+    version: "v3.3" // use version 2.0
+  });
+};
+
+// Load the SDK asynchronously
+(function(d, s, id) {
+  var js,
+    fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js";
+  fjs.parentNode.insertBefore(js, fjs);
+})(document, "script", "facebook-jssdk");
 </script>
