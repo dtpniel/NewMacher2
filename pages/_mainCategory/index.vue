@@ -7,7 +7,7 @@
 
 <script>
 import Route from "vue-router";
-import JobsList from "~/components/Jobslist.vue";
+import JobsList from "~/components/JobsList.vue";
 import { mapState } from "vuex";
 
 import axios from "axios";

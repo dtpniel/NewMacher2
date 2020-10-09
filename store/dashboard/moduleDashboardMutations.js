@@ -1,0 +1,4 @@
+/*=moduleDashboardMutations.js=*/
+
+export default {
+}

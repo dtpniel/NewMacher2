@@ -1,0 +1,3 @@
+/*=moduleDashboardState.js=*/
+export default {
+}

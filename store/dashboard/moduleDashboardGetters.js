@@ -1,0 +1,4 @@
+/*=moduleDashboardGetters.js=*/
+
+export default {
+}
