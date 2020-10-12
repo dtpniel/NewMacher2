@@ -29,17 +29,17 @@
                     <n-link to="/dashboard/bookmarks"><i class="icon-material-outline-star-border"></i> Bookmarks</n-link>
                   </li>
                   <li>
-                    <n-link to="/dashboard/invoices"><i class="icon-material-outline-dashboard"></i> Invoices</n-link>
+                    <n-link to="/dashboard/invoices"><i class="icon-feather-file"></i> Invoices</n-link>
                   </li>
                 </ul>
                 <ul data-submenu-title="My Jobs">
                   <li>
-                    <n-link to="/dashboard/jobs"><i class="icon-material-outline-dashboard"></i> Jobs</n-link>
+                    <n-link to="/dashboard/jobs"><i class="icon-line-awesome-list-ul"></i> Jobs</n-link>
                   </li>
                 </ul>
                 <ul data-submenu-title="Account">
                   <li>
-                    <n-link to="/about"><i class="icon-material-outline-settings"></i> Settings</n-link>
+                    <n-link to="/dashboard/account"><i class="icon-material-outline-settings"></i> Settings</n-link>
                   </li>
                   <li>
                     <n-link to="/about"><i class="icon-material-outline-power-settings-new"></i> Logout</n-link>

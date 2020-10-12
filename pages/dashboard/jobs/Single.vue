@@ -4,19 +4,21 @@
 *
 * ========= *-->
 <template>
-  <li>
-    <!-- Job Listing -->
+  <!-- Job Listing -->
+  <div>
+
     <div class="job-listing">
       <!-- Job Listing Details -->
       <div class="job-listing-details">
         <!-- Details -->
         <div class="job-listing-description">
-          <h3 class="job-listing-title"><a href="#">Frontend React Developer</a> <span
-              class="dashboard-status-button green d-inline-block">Pending Approval</span></h3>
+          <h3 class="job-listing-title">
+            <nuxt-link :to="job.link"> {{ job.da_title }}</nuxt-link>
+            <span class="dashboard-status-button green d-inline-block">{{ job.status }}</span></h3>
           <!-- Job Listing Footer -->
           <div class="job-listing-footer">
             <ul>
-              <li><i class="icon-material-outline-date-range"></i> Posted on 10 July, 2019</li>
+              <li><i class="icon-material-outline-date-range"></i> Posted on {{ job.da_date }}</li>
               <li><i class="icon-material-outline-date-range"></i> Expiring on 10 August, 2019</li>
             </ul>
           </div>
@@ -33,20 +35,13 @@
       <a href="#" class="button gray ripple-effect ico" data-tippy-placement="top" data-tippy=""
          data-original-title="Remove"><i class="icon-feather-trash-2"></i></a>
     </div>
-  </li>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'single-job',
-  props: ['jobs'],
-  josbList: [{
-    da_title: 'this it the title',
-    da_description: 'Deserunt nostrud Lorem commodo aliquip proident irure veniam et incididunt excepteur id exercitation laborum. Officia nostrud incididunt sint eiusmod do nostrud mollit do aute sit mollit minim nostrud duis. Excepteur dolor magna pariatur enim et amet sit commodo irure ullamco esse. Commodo Lorem irure ad eiusmod enim non ullamco officia sint. Aute minim proident consequat elit ea. Aliqua adipisicing nisi labore consectetur Lorem proident laboris consequat ullamco irure occaecat et irure.',
-    da_date: '2020-12-10',
-    da_dc_id: 1,
-    da_part_time: false
-  }]
+  props: ['job'],
 }
 </script>
 

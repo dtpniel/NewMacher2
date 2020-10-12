@@ -5,7 +5,7 @@
 * ========= *-->
 <template>
   <!-- Dashboard Headline -->
-  <div class="dashboard-headline">
+  <div>
     <h3>{{ title }}</h3>
     <span>{{ subtitle || ' We are glad to see you again' }}</span>
   </div>

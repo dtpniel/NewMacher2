@@ -1,6 +1,6 @@
 /*=
 * ========
-*
+*  Initial state of the application
 *  STATE.JS FILE
 * @head
 * @isMobile

@@ -39,26 +39,26 @@
               <div class="input-with-icon-left">
                 <i class="icon-material-baseline-mail-outline"></i>
                 <input
-                  type="text"
-                  class="input-text with-border"
-                  name="email"
-                  id="email"
-                  v-model="email"
-                  placeholder="Email Address"
-                  required
+                    type="text"
+                    class="input-text with-border"
+                    name="email"
+                    id="email"
+                    v-model="email"
+                    placeholder="Email Address"
+                    required
                 />
               </div>
 
               <div class="input-with-icon-left">
                 <i class="icon-material-outline-lock"></i>
                 <input
-                  type="password"
-                  class="input-text with-border"
-                  name="password"
-                  id="password"
-                  v-model="password"
-                  placeholder="Password"
-                  required
+                    type="password"
+                    class="input-text with-border"
+                    name="password"
+                    id="password"
+                    v-model="password"
+                    placeholder="Password"
+                    required
                 />
               </div>
               <a href="#" class="forgot-password">Forgot Password?</a>
@@ -66,9 +66,9 @@
 
             <!-- Button -->
             <button
-              class="button full-width button-sliding-icon ripple-effect margin-top-10"
-              type="submit"
-              form="login-form"
+                class="button full-width button-sliding-icon ripple-effect margin-top-10"
+                type="submit"
+                form="login-form"
             >
               Log In
               <i class="icon-material-outline-arrow-right-alt"></i>
@@ -80,16 +80,16 @@
             </div>
             <div class="social-login-buttons">
               <button
-                class="facebook-login ripple-effect"
-                target="_blank"
-                @click.prevent="facebookLogIn"
+                  class="facebook-login ripple-effect"
+                  target="_blank"
+                  @click.prevent="facebookLogIn"
               >
                 <i class="icon-brand-facebook-f"></i> Log In via Facebook
               </button>
               <button
-                class="google-login ripple-effect"
-                target="_blank"
-                @click.prevent="googleLogIn"
+                  class="google-login ripple-effect"
+                  target="_blank"
+                  @click.prevent="googleLogIn"
               >
                 <i class="icon-brand-google-plus-g"></i> Log In via Google+
               </button>
@@ -124,15 +124,15 @@ export default {
       };
       try {
         this.$auth
-          .loginWith("local", {
-            data: { user: credentials }
-          })
-          .then(() => {
-            this.$toast.success("Logged In!");
-          })
-          .catch(e => {
-            this.$toast.error(e);
-          });
+            .loginWith("local", {
+              data: {user: credentials}
+            })
+            .then(() => {
+              this.$toast.success("Logged In!");
+            })
+            .catch(e => {
+              this.$toast.error(e);
+            });
       } catch (e) {
         this.$router.push("/login");
       }
@@ -141,13 +141,13 @@ export default {
     googleLogIn() {
       try {
         this.$auth
-          .loginWith("google")
-          .then(() => {
-            this.$toast.success("Logged In!");
-          })
-          .catch(e => {
-            this.$toast.error(e);
-          });
+            .loginWith("google")
+            .then(() => {
+              this.$toast.success("Logged In!");
+            })
+            .catch(e => {
+              this.$toast.error(e);
+            });
       } catch (e) {
         this.$router.push("/login");
       }
@@ -166,56 +166,59 @@ export default {
       //   this.$router.push("/login");
       // }
       FB.login(
-        function(response) {
-          if (response.status === "connected") {
-            getFacebookUser();
-          } else if (response.status === "not_authorized") {
-            {
-              alert("Failed to log in user with facebook!");
-              $("#uploadGif").css("display", "none");
+          function (response) {
+            if (response.status === "connected") {
+              getFacebookUser();
+            } else if (response.status === "not_authorized") {
+              {
+                alert("Failed to log in user with facebook!");
+                $("#uploadGif").css("display", "none");
+              }
+            } else {
+              {
+                alert("Failed to log in user with facebook!");
+                $("#uploadGif").css("display", "none");
+              }
             }
-          } else {
-            {
-              alert("Failed to log in user with facebook!");
-              $("#uploadGif").css("display", "none");
-            }
-          }
-        },
-        { scope: "public_profile,email" }
+          },
+          {scope: "public_profile,email"}
       );
     },
     getFacebookUser() {
       FB.api(
-        "/me",
-        "GET",
-        { fields: "id,name,birthday,email,about,cover" },
-        function(response) {
-          this.email = response.email;
-          this.name = response.name;
-          this.socialLogin = true;
-          this.logIn();
-        }
+          "/me",
+          "GET",
+          {fields: "id,name,birthday,email,about,cover"},
+          function (response) {
+            this.email = response.email;
+            this.name = response.name;
+            this.socialLogin = true;
+            this.logIn();
+          }
       );
     }
   }
 };
 
-window.fbAsyncInit = function() {
-  FB.init({
-    appId: "836797929683024",
-    xfbml: true, // parse social plugins on this page
-    version: "v3.3" // use version 2.0
-  });
-};
+
+if (process.client) {
+  window.fbAsyncInit = function () {
+    FB.init({
+      appId: "836797929683024",
+      xfbml: true, // parse social plugins on this page
+      version: "v3.3" // use version 2.0
+    });
+  };
 
 // Load the SDK asynchronously
-(function(d, s, id) {
-  var js,
-    fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s);
-  js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js";
-  fjs.parentNode.insertBefore(js, fjs);
-})(document, "script", "facebook-jssdk");
+  (function (d, s, id) {
+    var js,
+        fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  })(document, "script", "facebook-jssdk");
+}
 </script>

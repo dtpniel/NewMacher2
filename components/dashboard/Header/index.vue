@@ -28,169 +28,31 @@
       <!-- Right Side Content / End -->
       <div class="right-side">
         <!--  User Notifications -->
-        <div class="header-widget hide-on-mobile">
+        <div class="header-widget hide-on-mobile" data-chking="yes">
           <!-- Notifications -->
           <div class="header-notifications">
-            <!-- Trigger -->
-            <div class="header-notifications-trigger">
-              <a href="#"><i class="icon-feather-bell"></i><span>4</span></a>
-            </div>
-            <!-- Dropdown -->
-            <div class="header-notifications-dropdown">
-              <div class="header-notifications-headline">
-                <h4>Notifications</h4>
-                <button class="mark-as-read ripple-effect-dark" data-tippy-placement="left" data-tippy=""
-                        data-original-title="Mark all as read">
-                  <i class="icon-feather-check-square"></i>
-                </button>
-              </div>
-
-              <div class="header-notifications-content">
-                <div class="header-notifications-scroll" data-simplebar="init" style="height: 270px;">
-                  <div class="simplebar-track vertical" style="visibility: visible;">
-                    <div class="simplebar-scrollbar" style="visibility: visible; top: 0px; height: 192px;"></div>
-                  </div>
-                  <div class="simplebar-track horizontal" style="visibility: visible;">
-                    <div class="simplebar-scrollbar" style="visibility: visible; left: 0px; width: 25px;"></div>
-                  </div>
-                  <div class="simplebar-scroll-content" style="padding-right: 15px; margin-bottom: -30px;">
-                    <div class="simplebar-content" style="padding-bottom: 15px; margin-right: -15px;">
-                      <ul>
-                        <!-- Notification -->
-                        <li class="notifications-not-read">
-                          <a href="dashboard-manage-candidates.html">
-                            <span class="notification-icon"><i class="icon-material-outline-group"></i></span>
-                            <span class="notification-text">
-													<strong>Michael Shannah</strong> applied for a job <span class="color">Full Stack Software Engineer</span>
-												</span>
-                          </a>
-                        </li>
-
-                        <!-- Notification -->
-                        <li>
-                          <a href="dashboard-manage-bidders.html">
-                            <span class="notification-icon"><i class=" icon-material-outline-gavel"></i></span>
-                            <span class="notification-text">
-													<strong>Gilbert Allanis</strong> placed a bid on your <span
-                                class="color">iOS App Development</span> project
-												</span>
-                          </a>
-                        </li>
-
-                        <!-- Notification -->
-                        <li>
-                          <a href="dashboard-manage-jobs.html">
-                            <span class="notification-icon"><i class="icon-material-outline-autorenew"></i></span>
-                            <span class="notification-text">
-													Your job listing <span class="color">Full Stack PHP Developer</span> is expiring.
-												</span>
-                          </a>
-                        </li>
-
-                        <!-- Notification -->
-                        <li>
-                          <a href="dashboard-manage-candidates.html">
-                            <span class="notification-icon"><i class="icon-material-outline-group"></i></span>
-                            <span class="notification-text">
-													<strong>Sindy Forrest</strong> applied for a job <span class="color">Full Stack Software Engineer</span>
-												</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
+            <dropdown
+                :type="notifications.type"
+                :icon="notifications.icon"
+                :content="notifications.content"
+                :count="notifications.count"
+                :title="notifications.title"/>
           </div>
-
+          <!-- Notifications -->
           <!-- Messages -->
           <div class="header-notifications">
-            <div class="header-notifications-trigger">
-              <a href="#"><i class="icon-feather-mail"></i><span>3</span></a>
-            </div>
-
-            <!-- Dropdown -->
-            <div class="header-notifications-dropdown">
-
-              <div class="header-notifications-headline">
-                <h4>Messages</h4>
-                <button class="mark-as-read ripple-effect-dark" data-tippy-placement="left" data-tippy=""
-                        data-original-title="Mark all as read">
-                  <i class="icon-feather-check-square"></i>
-                </button>
-              </div>
-
-              <div class="header-notifications-content">
-                <div class="header-notifications-scroll" data-simplebar="init" style="height: 288px;">
-                  <div class="simplebar-track vertical" style="visibility: visible;">
-                    <div class="simplebar-scrollbar" style="visibility: visible; top: 0px; height: 183px;"></div>
-                  </div>
-                  <div class="simplebar-track horizontal" style="visibility: visible;">
-                    <div class="simplebar-scrollbar" style="visibility: visible; left: 0px; width: 25px;"></div>
-                  </div>
-                  <div class="simplebar-scroll-content" style="padding-right: 15px; margin-bottom: -30px;">
-                    <div class="simplebar-content" style="padding-bottom: 15px; margin-right: -15px;">
-                      <ul>
-                        <!-- Notification -->
-                        <li class="notifications-not-read">
-                          <a href="dashboard-messages.html">
-                              <span class="notification-avatar status-online"><img src="images/user-avatar-small-03.jpg"
-                                                                                   alt=""></span>
-                            <div class="notification-text">
-                              <strong>David Peterson</strong>
-                              <p class="notification-msg-text">Thanks for reaching out. I'm quite busy right now on
-                                many...</p>
-                              <span class="color">4 hours ago</span>
-                            </div>
-                          </a>
-                        </li>
-
-                        <!-- Notification -->
-                        <li class="notifications-not-read">
-                          <a href="dashboard-messages.html">
-                              <span class="notification-avatar status-offline"><img
-                                  src="images/user-avatar-small-02.jpg" alt=""></span>
-                            <div class="notification-text">
-                              <strong>Sindy Forest</strong>
-                              <p class="notification-msg-text">Hi Tom! Hate to break it to you, but I'm actually on
-                                vacation until...</p>
-                              <span class="color">Yesterday</span>
-                            </div>
-                          </a>
-                        </li>
-
-                        <!-- Notification -->
-                        <li class="notifications-not-read">
-                          <a href="dashboard-messages.html">
-                              <span class="notification-avatar status-online"><img
-                                  src="images/user-avatar-placeholder.png" alt=""></span>
-                            <div class="notification-text">
-                              <strong>Marcin Kowalski</strong>
-                              <p class="notification-msg-text">I received payment. Thanks for cooperation!</p>
-                              <span class="color">Yesterday</span>
-                            </div>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <a href="dashboard-messages.html" class="header-notifications-button ripple-effect button-sliding-icon">View
-                All Messages<i class="icon-material-outline-arrow-right-alt"></i></a>
-            </div>
+            <dropdown
+                :type="messages.type"
+                :icon="messages.icon"
+                :content="messages.content"
+                :count="messages.count"
+                :title="messages.title"/>
           </div>
-
+          <!-- Messages -->
         </div>
         <!--  User Notifications / End -->
-
         <!-- User Menu -->
         <div class="header-widget">
-
           <!-- Messages -->
           <div class="header-notifications user-menu">
             <div class="header-notifications-trigger">
@@ -231,10 +93,8 @@
 
             </div>
           </div>
-
         </div>
         <!-- User Menu / End -->
-
         <!-- Mobile Navigation Button -->
         <span class="mmenu-trigger">
 					<button class="hamburger hamburger--collapse" type="button">
@@ -243,23 +103,57 @@
 						</span>
 					</button>
 				</span>
-
       </div>
       <!-- Right Side Content / End -->
-
     </div>
   </div>
   <!-- Header / End -->
 </template>
 
-
 <script>
 
 import Logo from '~/components/Logo';
+import Messages from '~/components/dashboard/Header/Messages';
+import Dropdown from '~/components/dashboard/Header/Dropdown';
 
 export default {
   components: {
-    Logo
+    Logo,
+    Dropdown,
+    Messages
+  },
+  data() {
+    return {
+      messages: {
+        title: 'Message',
+        icon: 'icon-feather-mail',
+        type: 'message',
+        content: [{
+          avatar: 'images/user-avatar-small-03.jpg',
+          name: ' Nitish',
+          text: 'Thanks for reaching out. Im quite busy right now on many...'
+        }]
+      },
+      notifications: {
+        title: 'Notifications',
+        icon: 'icon-feather-bell',
+        type: 'notifications',
+        content: [{
+          avatar: 'images/user-avatar-small-03.jpg',
+          name: ' Nitish',
+          text: 'Thanks for reaching out. Im quite busy right now on many...'
+        }, {
+          avatar: 'images/user-avatar-small-03.jpg',
+          name: ' Nitish',
+          text: 'Thanks for reaching out. Im quite busy right now on many...'
+        },
+          {
+            avatar: 'images/user-avatar-small-03.jpg',
+            name: ' Nitish',
+            text: 'Thanks for reaching out. Im quite busy right now on many...'
+          }]
+      },
+    }
   }
 }
 

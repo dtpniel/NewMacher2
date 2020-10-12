@@ -32,13 +32,14 @@
                 <BreadCrumbs/>
               </div>
               <nuxt/>
+              <b-row>
+<!--                <Footer/>-->
+              </b-row>
             </div>
           </div>
         </div>
       </section> <!-- Dashboard Content End  -->
-
     </section><!-- Dashboard Container End -->
-
   </section> <!-- Wrapper End-->
 </template>
 

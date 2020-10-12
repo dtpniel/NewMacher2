@@ -14,9 +14,6 @@ Vue.filter('truncate', function (text, stop, clamp = '') {
     var separator = ' ';
     if (text.length <= stop) return text;
     return text.substr(0, text.lastIndexOf(separator, stop)) + clamp;
-
-
-
     // return text.slice(0, stop) + (stop < text.length ? clamp || '...' : '')
 })
 

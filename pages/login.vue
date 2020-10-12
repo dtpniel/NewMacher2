@@ -5,12 +5,13 @@
 </template>
 <script>
 import LogIn from "~/components/LogIn.vue";
+
 export default {
-  data: function() {
+  data: function () {
     return {
       title: "Macher Log In"
     };
   },
-  components: { LogIn }
+  components: {LogIn}
 };
 </script>
