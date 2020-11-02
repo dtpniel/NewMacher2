@@ -49,7 +49,7 @@
 import {Dashboard, Header, Footer, Sidebar, PageHeader, BreadCrumbs} from '~/components/dashboard';
 
 export default {
-  // middleware: 'authenticated',
+  middleware: 'authenticated',
   components: {
     Header,
     Sidebar,
