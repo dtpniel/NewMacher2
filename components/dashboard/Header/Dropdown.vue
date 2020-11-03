@@ -5,13 +5,13 @@
     <!-- Trigger -->
     <div class="header-notifications-trigger">
       <a href="#" @click.prevent="toggleDropdown">
-        <i :class="icon"></i><span>{{ content.length }}</span>
+        <i :class="content.icon"></i><span>{{ content.length }}</span>
       </a>
     </div>
     <!-- Dropdown -->
     <div class="header-notifications-dropdown">
       <div class="header-notifications-headline">
-        <h4>{{ title }}</h4>
+        <h4>{{ content.title }}</h4>
         <button class="mark-as-read ripple-effect-dark" title="Mark all as read" data-tippy-placement="left">
           <i class="icon-feather-check-square"></i>
         </button>
@@ -63,11 +63,11 @@ export default {
   components: {
     Notifications
   },
-  props: ['type', 'icon', 'title', 'content'],
+  props: ['content'],
   data() {
     return {
       isActive: false,
-    }
+    } 
   },
   methods: {
     toggleDropdown(e) {

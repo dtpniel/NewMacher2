@@ -31,22 +31,12 @@
         <div class="header-widget hide-on-mobile" data-chking="yes">
           <!-- Notifications -->
           <div class="header-notifications">
-            <dropdown
-                :type="notifications.type"
-                :icon="notifications.icon"
-                :content="notifications.content"
-                :count="notifications.count"
-                :title="notifications.title"/>
+            <dropdown :content="notifications"/>
           </div>
           <!-- Notifications -->
           <!-- Messages -->
           <div class="header-notifications">
-            <dropdown
-                :type="messages.type"
-                :icon="messages.icon"
-                :content="messages.content"
-                :count="messages.count"
-                :title="messages.title"/>
+            <dropdown :content="messages" />
           </div>
           <!-- Messages -->
         </div>

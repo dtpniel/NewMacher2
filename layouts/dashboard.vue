@@ -7,8 +7,7 @@
 <template>
   <!-- Wrapper -->
   <section id="wrapper">
-    <!-- Header Container
-  ================================================== -->
+    <!-- Header Container  ================================================== -->
     <header id="header-container" class="fullwidth dashboard-header not-sticky" style="position: fixed;">
       <Header/>
     </header><!-- Header Container End -->
@@ -49,7 +48,7 @@
 import {Dashboard, Header, Footer, Sidebar, PageHeader, BreadCrumbs} from '~/components/dashboard';
 
 export default {
-  middleware: 'authenticated',
+  // middleware: 'authenticated',
   components: {
     Header,
     Sidebar,
