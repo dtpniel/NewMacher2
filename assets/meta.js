@@ -1,8 +1,8 @@
 export default {
-    head () {
-      return {
-        title: this.meta.title,
-        meta:
+  head() {
+    return {
+      title: this.meta.title,
+      meta:
         [
           {
             hid: "description",
@@ -35,7 +35,7 @@ export default {
             name: "twitter:card",
             content: this.meta.socialTitle
           },
-          
+
           {
             hid: "twitter:site",
             name: "twitter:site",
@@ -50,6 +50,7 @@ export default {
           { itemprop: 'name', content: this.meta.title },
           { itemprop: 'description', content: this.meta.description }
         ]
-      }
     }
   }
+}
+

@@ -1,14 +1,14 @@
 import webpack from 'webpack'
-//import global from 'plugins/config'
+import toastConfig from './plugins/toastConfig.js'
 
-var global =
-{
-  facebookKey: "836797929683024",
-  googleKey: "194392922882-jpo7oj514o4t3puive3oen7r922tk4ce.apps.googleusercontent.com"
-};
+// var global =
+// {
+//   facebookKey: "836797929683024",
+//   googleKey: "194392922882-jpo7oj514o4t3puive3oen7r922tk4ce.apps.googleusercontent.com"
+// };
 
 module.exports = {
-  mode: 'universal',
+  // mode: 'universal',
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000',
     baseApi: 'http://localhost:3000' + "/api"
@@ -20,18 +20,7 @@ module.exports = {
 
   },
 
-  toast: {
-    position: 'top-center',
-    register: [ // Register custom toasts
-      {
-        name: 'my-error',
-        message: 'Oops...Something went wrong',
-        options: {
-          type: 'error'
-        }
-      }
-    ]
-  },
+  toast: toastConfig,
 
   /*
   ** Headers of the page
@@ -78,37 +67,25 @@ module.exports = {
   /*
   ** Global CSS
   */
-
   /*
   ** Plugins to load before mounting the App
   */
 
   plugins: [
     '~plugins/filters.js',
-    '~plugins/mixins.js'
+    '~plugins/mixins.js',
+    { src: '~/plugins/vuelidate', ssr: true }
+    // { src: '~plugins/password-strength.js', ssr: false }
     //   { src: '~plugins/vue-select', ssr: false }
   ],
   auth: {
     strategies: {
       local: {
         endpoints: {
-          login: { url: '/user/login', method: 'post', propertyName: 'token' },
+          login: { url: '/auth/user/login', method: 'post', propertyName: "token.accessToken" },
           logout: false,
-          user: { url: '/user/user', method: 'get', propertyName: false },
+          user: { url: '/auth/user/user', method: 'get', propertyName: false },
         },
-      },
-      //local:false,
-      facebook: {
-        client_id: global.facebookKey,
-        userinfo_endpoint: 'https://graph.facebook.com/v2.12/me',
-        scope: ['public_profile', 'email'],
-        dispaly:'popup',
-        redirect_uri: 'http://localhost:3000/login'
-      },
-      google: {
-        client_id: global.googleKey,
-        scope: ['profile', 'email'],
-        redirect_uri: 'http://localhost:3000/login'
       },
     },
     redirect: {
@@ -118,9 +95,10 @@ module.exports = {
       home: false
     },
     localStorage: false,
+
+
+
     watchLoggedIn: false,
-    tokenRequired: false,
-    tokenType: false
   },
   /*
   ** Nuxt.js modules
@@ -138,8 +116,7 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    baseURL: '/api',
-    credentials: true
+    baseURL: '/api'
 
     // See https://github.com/nuxt-community/axios-module#options
   },

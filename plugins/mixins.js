@@ -26,11 +26,11 @@ Vue.mixin({
     createMetaTags(metaTags) {
       var metaTags =
         [
-          // {
-          //   hid: "description",
-          //   name: "description",
-          //   content: metaTags.description
-          // },
+           {
+             hid: "description",
+             name: "description",
+             content: metaTags.description
+           },
           {
             vmid: "og:title",
             property: "og:title",

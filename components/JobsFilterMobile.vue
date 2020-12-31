@@ -309,7 +309,7 @@ export default {
     setcityIdData: function() {
       var self = this;
       return axios
-        .post(process.env.baseApi + "/cities", { stateId: this.stateId })
+        .post(process.env.baseApi + "/jobs/cities", { stateId: this.stateId })
         .then(cities => {
           var data = cities.data.data.recordsets;
           self.cityIdData = data[0];
@@ -318,7 +318,7 @@ export default {
     setcategoryIdData: function() {
       var self = this;
       return axios
-        .post(process.env.baseApi + "/categories", {
+        .post(process.env.baseApi + "/jobs/categories", {
           mainCategoryId: this.mainCategoryId
         })
         .then(categories => {

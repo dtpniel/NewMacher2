@@ -30,7 +30,7 @@
               <h3>We're glad to see you again!</h3>
               <span>
                 Don't have an account?
-                <a href="register">Sign Up!</a>
+                <a href="/user/register">Sign Up!</a>
               </span>
             </div>
 
@@ -104,14 +104,16 @@
     <!-- Spacer / End-->
   </div>
 </template>
+
 <script>
+var auth2;
 export default {
   data() {
     return {
       email: "",
       password: "",
       socialLogin: false,
-      name: ""
+      name: "",
     };
   },
   methods: {
@@ -120,102 +122,130 @@ export default {
         email: this.email,
         password: this.password,
         socialLogin: this.socialLogin,
-        name: this.name
+        name: this.name,
       };
       try {
+        var self = this;
         this.$auth
           .loginWith("local", {
-            data: { user: credentials }
+            data: { user: credentials },
           })
-          .then(() => {
-            this.$toast.success("Logged In!");
+          .then((data) => {
+            if (this.$auth.loggedIn) {
+              this.$toasted.global.loginsuccessful();
+              console.log(this.$auth);
+            } else {
+              this.$toasted.global.incorrectpassword();
+            }
           })
-          .catch(e => {
-            this.$toast.error(e);
+          .catch((e) => {
+            if (e.response.data.indexOf("password") >= 0)
+              self.$toasted.global.incorrectpassword();
           });
       } catch (e) {
-        this.$router.push("/login");
+        self.$router.push("/login");
       }
     },
 
     googleLogIn() {
-      try {
-        this.$auth
-          .loginWith("google")
-          .then(() => {
-            this.$toast.success("Logged In!");
-          })
-          .catch(e => {
-            this.$toast.error(e);
-          });
-      } catch (e) {
-        this.$router.push("/login");
-      }
+      var self = this;
+      // auth2.signIn().then(function(googleUser) {
+      //   console.log(googleUser);
+      // });
+      auth2
+        .signIn({
+          scope: "profile email",
+        })
+        .then(
+          function (googleUser) {
+            var profile = googleUser.getBasicProfile();
+            if (!profile) {
+              alert("Failed to log in user with google!");
+              return;
+            }
+            self.email = profile.getEmail();
+            self.name = profile.getName();
+            self.socialLogin = true;
+            self.logIn();
+          },
+          function (error) {
+            console.log("user failed to sign in");
+          }
+        );
     },
     facebookLogIn() {
-      // try {
-      //   this.$auth
-      //     .loginWith("facebook")
-      //     .then(() => {
-      //       this.$toast.success("Logged In!");
-      //     })
-      //     .catch(e => {
-      //       this.$toast.error(e);
-      //     });
-      // } catch (e) {
-      //   this.$router.push("/login");
-      // }
+      var self = this;
       FB.login(
-        function(response) {
+        function (response) {
           if (response.status === "connected") {
-            getFacebookUser();
+            self.loginLocalFacebookUser();
           } else if (response.status === "not_authorized") {
             {
               alert("Failed to log in user with facebook!");
-              $("#uploadGif").css("display", "none");
             }
           } else {
             {
               alert("Failed to log in user with facebook!");
-              $("#uploadGif").css("display", "none");
             }
           }
         },
         { scope: "public_profile,email" }
       );
     },
-    getFacebookUser() {
+    loginLocalFacebookUser() {
+      var self = this;
       FB.api(
         "/me",
         "GET",
         { fields: "id,name,birthday,email,about,cover" },
-        function(response) {
-          this.email = response.email;
-          this.name = response.name;
-          this.socialLogin = true;
-          this.logIn();
+        function (response) {
+          self.email = response.email;
+          self.name = response.name;
+          self.socialLogin = true;
+          self.logIn();
         }
       );
-    }
-  }
-};
+    },
+  },
+  head() {
+    return {
+      script: [
+        {
+          //src: "https://apis.google.com/js/platform.js"
+          src: "https://apis.google.com/js/api:client.js",
+        },
+      ],
+    };
+  },
+  mounted() {
+    // Load the SDK asynchronously
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "facebook-jssdk");
 
-window.fbAsyncInit = function() {
-  FB.init({
-    appId: "836797929683024",
-    xfbml: true, // parse social plugins on this page
-    version: "v3.3" // use version 2.0
-  });
-};
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: "786398901808532",
+        xfbml: true, // parse social plugins on this page
+        version: "v3.3", // use version 2.0
+      });
+    };
 
-// Load the SDK asynchronously
-(function(d, s, id) {
-  var js,
-    fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s);
-  js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js";
-  fjs.parentNode.insertBefore(js, fjs);
-})(document, "script", "facebook-jssdk");
+    var clientId =
+      "194392922882-jpo7oj514o4t3puive3oen7r922tk4ce.apps.googleusercontent.com";
+
+    gapi.load("auth2", function () {
+      // Retriee the singleton for the GoogleAuth library and set up the client.
+      auth2 = gapi.auth2.init({
+        client_id: clientId,
+      });
+    });
+  },
+};
 </script>

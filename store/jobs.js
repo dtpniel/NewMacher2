@@ -273,9 +273,9 @@ export const getters = {
 export const actions = {
 
   async getJobs({ commit, state }) {
-    return axios.post(process.env.baseApi + "/jobs", { filter: state.filter })
+    return axios.post(process.env.baseApi + "/jobs/jobsList", { filter: state.filter })
       .then(jobs => {
-        if (!jobs.data)
+        if (!jobs.data || !jobs.data.data)
           return;
         var data = jobs.data.data.recordsets;
 
@@ -292,9 +292,9 @@ export const actions = {
   },
 
   async getJobsMobile({ commit, state }) {
-    return axios.post(process.env.baseApi + "/jobsMobile", { filter: state.filter })
+    return axios.post(process.env.baseApi + "/jobs/jobsListMobile", { filter: state.filter })
       .then(jobs => {
-        if (!jobs.data)
+        if (!jobs.data || !jobs.data.data)
           return;
         var data = jobs.data.data.recordsets;
         commit("setJobs", data[dataIndex.jobs]);
@@ -307,9 +307,9 @@ export const actions = {
 
   async getJobsQueryString({ commit, dispatch }, data) {
     var route = data.route;
-    return axios.post(process.env.baseApi + "/jobsQueryString", data.qstring)
+    return axios.post(process.env.baseApi + "/jobs/jobsQueryString", data.qstring)
       .then(jobs => {
-        if (!jobs.data.data)
+        if (!jobs.data || !jobs.data.data)
           return;
         var data = jobs.data.data.recordsets;
         // data[dataIndex.states].unshift({ id: 0, name: "All States" });
@@ -328,9 +328,9 @@ export const actions = {
 
 
   async getSingleJob({ commit, dispatch }, data) {
-    return axios.post(process.env.baseApi + "/singleJob", data)
+    return axios.post(process.env.baseApi + "/jobs/singleJob", data)
       .then(singleJob => {
-        if (!singleJob.data)
+        if (!singleJob.data || !singleJob.data.data)
           return;
         var data = singleJob.data.data.recordset;
         if (!data.length)

@@ -41,9 +41,13 @@ exports.database = {
     // password: 'j4234NBerH98233432',
     // port: 1433
 
-    server: 'localhost',
+    server: '162.246.19.134',
     database: 'Macher',
     user: 'sa',
     password: 'ramot27',
     port: 1433
+}
+
+exports.authentication = {
+    jwtSecret: '23E120231283D9A1E7264B6F00303C702304969D40F92EDEFE0B355EB1FD2A1D'
 }
