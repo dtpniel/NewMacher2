@@ -1,5 +1,6 @@
 import webpack from 'webpack'
 import toastConfig from './plugins/toastConfig.js'
+import global from './plugins/global.js';
 
 // var global =
 // {
@@ -14,6 +15,7 @@ module.exports = {
     baseApi: 'http://localhost:3000' + "/api"
 
   },
+  global: global,
   router: {
     base: '/',
     prefetchLinks: true

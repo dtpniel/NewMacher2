@@ -1,12 +1,4 @@
 export default {
-  toastConfig: {
-    action: {
-      text: 'Dismiss',
-      onClick: (e, toastObject) => {
-        toastObject.goAway(0);
-      }
-    },
-
     position: 'top-center',
     iconPack: 'material',
     closeOnSwipe: true,
@@ -89,4 +81,3 @@ export default {
 
     ]
   }
-}

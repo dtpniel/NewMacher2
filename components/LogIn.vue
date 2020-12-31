@@ -132,10 +132,10 @@ export default {
           })
           .then((data) => {
             if (this.$auth.loggedIn) {
-              this.$toasted.global.loginsuccessful();
+              self.$toasted.global.loginsuccessful();
               console.log(this.$auth);
             } else {
-              this.$toasted.global.incorrectpassword();
+              self.$toasted.global.incorrectpassword();
             }
           })
           .catch((e) => {
@@ -231,14 +231,13 @@ export default {
 
     window.fbAsyncInit = function () {
       FB.init({
-        appId: "786398901808532",
+        appId: "836797929683024",
         xfbml: true, // parse social plugins on this page
         version: "v3.3", // use version 2.0
       });
     };
 
-    var clientId =
-      "194392922882-jpo7oj514o4t3puive3oen7r922tk4ce.apps.googleusercontent.com";
+    var clientId = "194392922882-jkdlkc4n44036jh97j2foatcaidh68of.apps.googleusercontent.com";
 
     gapi.load("auth2", function () {
       // Retriee the singleton for the GoogleAuth library and set up the client.

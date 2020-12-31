@@ -40,7 +40,7 @@ router.post('/auth/user/login', function (req, res) {
                 return;
             }
 
-            if (!data.data.recordset) {
+            if (data.data.recordset.length==0) {
                 console.log(data.error)
                 res.status(403).send("Incorrect password!")
                 return;
