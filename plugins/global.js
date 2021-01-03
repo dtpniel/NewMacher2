@@ -9,3 +9,4 @@ export default ({ app }, inject) => {
 //test for commit/push 
 //test for pull
 //another test
+//another test 2
