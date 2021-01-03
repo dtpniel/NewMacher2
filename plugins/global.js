@@ -10,3 +10,5 @@ export default ({ app }, inject) => {
 //test for pull
 //another test
 //another test 2
+//test for master
+//test diti go now
