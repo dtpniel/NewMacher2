@@ -6,4 +6,5 @@ export default ({ app }, inject) => {
     }
     )
 }
-//test for commit/pull 
+//test for commit/push 
+//test for pull
