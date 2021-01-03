@@ -1,6 +1,5 @@
 import webpack from 'webpack'
 import toastConfig from './plugins/toastConfig.js'
-import global from './plugins/global.js';
 
 // var global =
 // {
@@ -15,7 +14,7 @@ module.exports = {
     baseApi: 'http://localhost:3000' + "/api"
 
   },
-  global: global,
+
   router: {
     base: '/',
     prefetchLinks: true
@@ -76,7 +75,8 @@ module.exports = {
   plugins: [
     '~plugins/filters.js',
     '~plugins/mixins.js',
-    { src: '~/plugins/vuelidate', ssr: true }
+    { src: '~/plugins/vuelidate', ssr: true },
+    { src: '~plugins/global.js' }
     // { src: '~plugins/password-strength.js', ssr: false }
     //   { src: '~plugins/vue-select', ssr: false }
   ],
