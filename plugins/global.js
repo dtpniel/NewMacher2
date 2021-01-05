@@ -6,4 +6,5 @@ export default ({ app }, inject) => {
     }
     )
 }
-//search component branch
+//google geo filter
+//new function
