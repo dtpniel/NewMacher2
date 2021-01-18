@@ -11838,7 +11838,7 @@ input.range-slider, input.default-slider {
 }
 
 .slider.slider-horizontal .slider-handle {
-	margin-left: -11px;
+	margin-left: -10px;
 }
 
 .slider.slider-horizontal .slider-tick-label-container {

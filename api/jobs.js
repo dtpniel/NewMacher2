@@ -15,7 +15,10 @@ router.post('/jobs/jobsList', function (req, res) {
     var serverFilter = {
       mainCategoryId: filter.mainCategoryId,
       stateId: filter.stateId,
-      freeText: filter.freeText
+      freeText: filter.freeText,
+      lng: filter.lng,
+      lat: filter.lat,
+      radius: filter.radius
     }
   }
   if (params) {

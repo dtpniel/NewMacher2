@@ -28,6 +28,7 @@
     "mssql": "^4.3.0",
     "nuxt": "^2.14.7",
     "setimmediate": "^1.0.5",
+    "vue-bootstrap-slider": "^2.1.8",
     "vue-meta": "^2.4.0",
     "vue-password-strength-meter": "^1.7.2",
     "vuelidate": "^0.7.6",

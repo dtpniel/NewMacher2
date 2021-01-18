@@ -29,7 +29,10 @@ export const state = () => ({
     temporary: 0,
     fromHome: 0,
     freeText: "",
-    sortBy: {}
+    sortBy: {},
+    radius: 0,
+    lat: 0,
+    lng: 0
   },
   filterDefault: {
     stateId: 0,
@@ -41,7 +44,10 @@ export const state = () => ({
     internship: 0,
     temporary: 0,
     fromHome: 0,
-    freeText: ""
+    freeText: "",
+    radius: 1,
+    lat: 0,
+    lng: 0
   },
   filterDefinition: [
     {
@@ -109,6 +115,27 @@ export const state = () => ({
     },
     {
       name: "freeText",
+      multiple: false,
+      server: true,
+      resetSubCategory: false,
+      subCategory: ""
+    },
+    {
+      name: "radius",
+      multiple: false,
+      server: true,
+      resetSubCategory: false,
+      subCategory: ""
+    },
+    {
+      name: "lat",
+      multiple: false,
+      server: true,
+      resetSubCategory: false,
+      subCategory: ""
+    }
+    , {
+      name: "lng",
       multiple: false,
       server: true,
       resetSubCategory: false,
