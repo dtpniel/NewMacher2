@@ -1,26 +1,26 @@
 import axios from 'axios'
 import { getField, updateField } from 'vuex-map-fields';
-
+import turf from '@turf/turf';
 var dataIndex = {
   jobs: 0,
-  states: 1,
-  cities: 2,
-  mainCategories: 3,
-  categories: 4,
-  mainCategorySEO: 5,
-  categorySEO: 6,
-  stateSEO: 7,
-  citySEO: 8,
-  premiumJobs: 9
+  // states: 1,
+  // cities: 2,
+  mainCategories: 1,
+  categories: 2,
+  mainCategorySEO: 3,
+  categorySEO: 4,
+  // stateSEO: 5,
+  // citySEO: 6,
+  //premiumJobs: 9
 };
 
 export const state = () => ({
   jobs: [],
   singleJob: {},
-  premiumJobs: [],
+  //premiumJobs: [],
   filter: {
-    stateId: 0,
-    cityId: [],
+    // stateId: 0,
+    // cityId: [],
     mainCategoryId: 0,
     categoryId: [],
     freelance: 0,
@@ -31,12 +31,11 @@ export const state = () => ({
     freeText: "",
     sortBy: {},
     radius: 0,
-    lat: 0,
-    lng: 0
+    location: []
   },
   filterDefault: {
-    stateId: 0,
-    cityId: [],
+    // stateId: 0,
+    // cityId: [],
     mainCategoryId: 0,
     categoryId: [],
     freelance: 0,
@@ -45,25 +44,11 @@ export const state = () => ({
     temporary: 0,
     fromHome: 0,
     freeText: "",
-    radius: 1,
-    lat: 0,
-    lng: 0
+    radius: 0,
+    location: []
   },
   filterDefinition: [
-    {
-      name: "stateId",
-      multiple: false,
-      server: true,
-      resetSubCategory: true,
-      subCategory: "cityId"
-    },
-    {
-      name: "cityId",
-      multiple: true,
-      server: false,
-      resetSubCategory: false,
-      subCategory: ""
-    },
+
     {
       name: "mainCategoryId",
       multiple: false,
@@ -123,34 +108,29 @@ export const state = () => ({
     {
       name: "radius",
       multiple: false,
-      server: true,
+      server: false,
       resetSubCategory: false,
       subCategory: ""
     },
     {
-      name: "lat",
+      name: "location",
       multiple: false,
-      server: true,
+      server: false,
       resetSubCategory: false,
       subCategory: ""
     }
-    , {
-      name: "lng",
-      multiple: false,
-      server: true,
-      resetSubCategory: false,
-      subCategory: ""
-    }],
+  ],
 
-  stateIdData: [],
+  // stateIdData: [],
   mainCategoryIdData: [],
-  cityIdData: [],
+  // cityIdData: [],
   categoryIdData: [],
   freelanceData: [{ name: "Freelance", id: 1 }],
   fromHomeData: [{ name: "From Home", id: 1 }],
   partTimeData: [{ name: "Part Time", id: 1 }],
   internshipData: [{ name: "Internship", id: 1 }],
   temporaryData: [{ name: "Temporary", id: 1 }],
+  locationData: [],
   metaTags: {
     title: "Jewish Jobs on Macher: The Largest Jewish Classifieds Website in the US",
     description: "The largest jewish jobs website in NYC, Brooklyn, Boro Park, Five Towns, Crown Heights, Woodmere, Monsey, Lakewood and more.",
@@ -175,13 +155,13 @@ export const mutations = {
     state.singleJob = data;
   },
 
-  setStateData(state, data) {
-    state.stateIdData = data;
-  },
+  // setStateData(state, data) {
+  //   state.stateIdData = data;
+  // },
 
-  setCityData(state, data) {
-    state.cityIdData = data;
-  },
+  // setCityData(state, data) {
+  //   state.cityIdData = data;
+  // },
 
   setMainCategoryData(state, data) {
     state.mainCategoryIdData = data;
@@ -191,9 +171,9 @@ export const mutations = {
     state.categoryIdData = data;
   },
 
-  setpremiumJobs(state, data) {
-    state.premiumJobs = data;
-  },
+  // setpremiumJobs(state, data) {
+  //   state.premiumJobs = data;
+  // },
 
   setMetaTags(state, metaTags) {
     state.metaTags = Object.assign({}, state.metaTags, metaTags);
@@ -225,11 +205,15 @@ export const getters = {
 
   filteredJobs: state => {
     var filter = state.filter;
+
     return state.jobs
       .filter(x => {
         return (
-          (filter.cityId.length == 0 ||
-            filter.cityId.indexOf(x.cityId) > -1) &&
+          // (filter.cityId.length == 0 ||
+          //   filter.cityId.indexOf(x.cityId) > -1) &&
+
+          (filter.location.length == 0 ||
+            $nuxt.isPointInPolygon(x.lng, x.lat, filter.location)) &&
           (filter.categoryId.length == 0 ||
             filter.categoryId.indexOf(x.categoryId) > -1) &&
           (
@@ -258,33 +242,33 @@ export const getters = {
   filteredJobsSliced: (state, getters) => {
     return getters.filteredJobs.slice(state.filter.start, state.perPage * state.currentPage);
   },
-  premiumJobs: state => {
-    var filter = state.filter;
-    let jobs = [];
-    let premiumJobs = [];
+  // premiumJobs: state => {
+  //   var filter = state.filter;
+  //   let jobs = [];
+  //   let premiumJobs = [];
 
-    Object.assign(jobs, state.premiumJobs);
-    jobs.sort(function () { return 0.5 - Math.random() });
+  //   Object.assign(jobs, state.premiumJobs);
+  //   jobs.sort(function () { return 0.5 - Math.random() });
 
-    //try to find 3 jobs from the main category
-    premiumJobs = jobs
-      .filter(x => {
-        return (
-          filter.mainCategoryId == 0 ||
-          filter.mainCategoryId == x.mainCategoryId
-        );
-      })
+  //   //try to find 3 jobs from the main category
+  //   premiumJobs = jobs
+  //     .filter(x => {
+  //       return (
+  //         filter.mainCategoryId == 0 ||
+  //         filter.mainCategoryId == x.mainCategoryId
+  //       );
+  //     })
 
-    //if there are not enough, combine it with other premium ads
-    if (premiumJobs.length < 3) {
-      if (premiumJobs.length > 0)
-        premiumJobs.push(...jobs);
-      else
-        premiumJobs = jobs;
-    }
+  //   //if there are not enough, combine it with other premium ads
+  //   if (premiumJobs.length < 3) {
+  //     if (premiumJobs.length > 0)
+  //       premiumJobs.push(...jobs);
+  //     else
+  //       premiumJobs = jobs;
+  //   }
 
-    return premiumJobs.slice(0, 3);
-  },
+  //   return premiumJobs.slice(0, 3);
+  // },
 
   getFilter: state => {
     return getField(state.filter)
@@ -298,7 +282,16 @@ export const getters = {
 
 
 export const actions = {
-
+  isPointInPolygon(lng, lat, polygon) {
+    console.log($nuxt);
+    var turf = require('@turf/turf');
+    if (!lng)
+      return false;
+    var centerPoint = turf.point([lng, lat]);
+    var poly = turf.polygon([polygon]);
+    var isPointinPolygon = turf.booleanPointInPolygon(centerPoint, poly);
+    return isPointinPolygon;
+  },
   async getJobs({ commit, state }) {
     return axios.post(process.env.baseApi + "/jobs/jobsList", { filter: state.filter })
       .then(jobs => {
@@ -309,8 +302,8 @@ export const actions = {
         // data[dataIndex.states].unshift({ id: 0, name: "All States" });
         // data[dataIndex.mainCategories].unshift({ id: 0, name: "All Categories" });
         commit("setJobs", data[dataIndex.jobs]);
-        commit("setStateData", data[dataIndex.states]);
-        commit("setCityData", data[dataIndex.cities]);
+        // commit("setStateData", data[dataIndex.states]);
+        // commit("setCityData", data[dataIndex.cities]);
         commit("setMainCategoryData", data[dataIndex.mainCategories]);
         commit("setCategoryData", data[dataIndex.categories]);
         commit("setcurrentPage", 1);
@@ -342,11 +335,11 @@ export const actions = {
         // data[dataIndex.states].unshift({ id: 0, name: "All States" });
         // data[dataIndex.mainCategories].unshift({ id: 0, name: "All Categories" });
         commit("setJobs", data[dataIndex.jobs]);
-        commit("setStateData", data[dataIndex.states]);
-        commit("setCityData", data[dataIndex.cities]);
+        // commit("setStateData", data[dataIndex.states]);
+        // commit("setCityData", data[dataIndex.cities]);
         commit("setMainCategoryData", data[dataIndex.mainCategories]);
         commit("setCategoryData", data[dataIndex.categories]);
-        commit("setpremiumJobs", data[dataIndex.premiumJobs]);
+        // commit("setpremiumJobs", data[dataIndex.premiumJobs]);
         dispatch("setMetaTags", data);
         //dispatch("setMetaTags", { data: data, route: route });
       }
@@ -467,19 +460,19 @@ export const actions = {
       commit("setFilter", { categoryId: [category[0].categoryId] });
     }
 
-    var stateUS = data[dataIndex.stateSEO]
-    if (stateUS[0]) {
-      location = " in " + stateUS[0].title;
-      params.push({ name: "stateId", id: stateUS[0].stateId });
-      commit("setFilter", { stateId: stateUS[0].stateId });
-    }
+    // var stateUS = data[dataIndex.stateSEO]
+    // if (stateUS[0]) {
+    //   location = " in " + stateUS[0].title;
+    //   params.push({ name: "stateId", id: stateUS[0].stateId });
+    //   commit("setFilter", { stateId: stateUS[0].stateId });
+    // }
 
-    var city = data[dataIndex.citySEO]
-    if (city[0]) {
-      location = " in " + city[0].title;
-      params.push({ name: "cityId", id: city[0].cityId });
-      commit("setFilter", { cityId: [city[0].cityId] });
-    }
+    // var city = data[dataIndex.citySEO]
+    // if (city[0]) {
+    //   location = " in " + city[0].title;
+    //   params.push({ name: "cityId", id: city[0].cityId });
+    //   commit("setFilter", { cityId: [city[0].cityId] });
+    // }
 
     if (!title)
       return;

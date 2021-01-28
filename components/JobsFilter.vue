@@ -26,10 +26,10 @@
         data-selected-text-format="count"
         data-size="7"
         id="radius"
-        @change="setFilter($event)"
+        @change="setLocation()"
         v-model="radius"
       >
-        <option value="1">1 mile</option>
+        <option value="1" selected>1 mile</option>
         <option value="5">5 miles</option>
         <option value="10">10 miles</option>
         <option value="20">20 miles</option>
@@ -37,45 +37,6 @@
         <option value="50">50 miles</option>
         <option value="0">Any distance</option>
       </select>
-      <!-- Location -->
-      <!-- 
-      <select
-        class="selectpicker margin-top-20"
-        data-selected-text-format="count"
-        data-size="7"
-        title="All States"
-        id="stateId"
-        @change="setFilter($event)"
-        v-model="stateId"
-      >
-        <option v-for="item in stateIdData" :value="item.id" :key="item.id">
-          {{ item.name }} ({{ item.sum }})
-          <a class="selectlink" :href="$route.fullPath + '?stateId=' + item.id"
-            >{{ item.name }} ({{ item.sum }})</a
-          >
-        </option>
-      </select>
-
-      <select
-        :disabled="!stateId"
-        class="selectpicker margin-top-20"
-        data-selected-text-format="count"
-        data-size="7"
-        title="All Cities"
-        multiple
-        id="cityId"
-        @change="setFilter($event)"
-        v-model="cityId"
-      >
-        <option v-for="item in cityIdData" :value="item.id" :key="item.id">
-          {{ item.name }} ({{ item.sum }})
-          <a
-            class="selectlink"
-            :href="$route.fullPath + qstringPrefix() + 'cityId=' + item.id"
-            >{{ item.name }} ({{ item.sum }})</a
-          >
-        </option>
-      </select> -->
     </div>
 
     <!-- Keywords -->
@@ -221,6 +182,7 @@
 <script>
 import FilterItems from "~/components/FilterItems";
 import { createNamespacedHelpers } from "vuex";
+
 import { mapMutations, mapActions, mapState } from "vuex";
 import { createHelpers } from "vuex-map-fields";
 const { mapFields } = createHelpers({
@@ -240,9 +202,7 @@ export default {
   },
   computed: {
     ...mapState("jobs", {
-      stateIdData: (state) => state.stateIdData,
       mainCategoryIdData: (state) => state.mainCategoryIdData,
-      cityIdData: (state) => state.cityIdData,
       categoryIdData: (state) => state.categoryIdData,
       freelanceData: (state) => state.freelanceData,
       fromHomeData: (state) => state.fromHomeData,
@@ -252,8 +212,8 @@ export default {
       filterDefinition: (state) => state.filterDefinition,
     }),
     ...mapFields("jobs", [
-      "stateId",
-      "cityId",
+      // "stateId",
+      // "cityId",
       "mainCategoryId",
       "categoryId",
       "freelance",
@@ -263,8 +223,7 @@ export default {
       "internship",
       "freeText",
       "radius",
-      "lat",
-      "lng",
+      "location",
     ]),
   },
 
@@ -396,12 +355,28 @@ export default {
     ...mapMutations("jobs", { updateFilter: "setFilter" }),
 
     locationChanged() {
+      this.setLocation();
+
+      this.setFilter(undefined, "location");
+    },
+    async setLocation() {
       const place = this.autocomplete.getPlace();
-      console.log(place);
-      console.log(place.geometry.location.lat());
-      this.lat = place.geometry.location.lat();
-      this.lng = place.geometry.location.lng();
-      this.setFilter(undefined, "lat");
+
+      var input = document.getElementById("autocomplete-input");
+      if (place.address_components)
+        var city =
+          (place.address_components[0] &&
+            place.address_components[0].long_name) ||
+          "";
+
+      input.blur();
+      setTimeout(function () {
+        input.value = city;
+      }, 500);
+      this.locationData = [{ name: city, id: 0 }];
+
+      var address = place.formatted_address;
+      this.location = await this.getLocationPolygon(address, this.radius);
     },
   },
 
@@ -438,15 +413,15 @@ export default {
       this.addSingleFilterItem(this.categoryId, "categoryId");
     }
 
-    if (this.stateId > 0) {
-      $("#stateId").val(this.stateId);
-      this.addSingleFilterItem(this.stateId, "stateId");
-    }
+    // if (this.stateId > 0) {
+    //   $("#stateId").val(this.stateId);
+    //   this.addSingleFilterItem(this.stateId, "stateId");
+    // }
 
-    if (this.cityId > 0) {
-      $("#cityId").val(this.cityId);
-      this.addSingleFilterItem(this.cityId, "cityId");
-    }
+    // if (this.cityId > 0) {
+    //   $("#cityId").val(this.cityId);
+    //   this.addSingleFilterItem(this.cityId, "cityId");
+    // }
     var options = {
       types: ["geocode"],
       language: "en",
@@ -455,7 +430,9 @@ export default {
 
     var input = document.getElementById("autocomplete-input");
     this.autocomplete = new google.maps.places.Autocomplete(input, options);
-    this.autocomplete.setFields(["geometry,formatted_address"]);
+    this.autocomplete.setFields([
+      "geometry,formatted_address,address_component",
+    ]);
     this.autocomplete.addListener("place_changed", this.locationChanged);
   },
 };

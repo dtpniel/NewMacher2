@@ -1,5 +1,6 @@
-import Vue from 'vue'
+import Vue from 'vue';
 
+import axios from "axios";
 Vue.mixin({
   methods: {
     // isMobile() {
@@ -26,11 +27,11 @@ Vue.mixin({
     createMetaTags(metaTags) {
       var metaTags =
         [
-           {
-             hid: "description",
-             name: "description",
-             content: metaTags.description
-           },
+          {
+            hid: "description",
+            name: "description",
+            content: metaTags.description
+          },
           {
             vmid: "og:title",
             property: "og:title",
@@ -71,6 +72,48 @@ Vue.mixin({
           { itemprop: 'description', content: metaTags.description }
         ];
       return metaTags;
+    },
+
+    isPointInPolygon(lng, lat, polygon) {
+      var turf = require('@turf/turf');
+      if (!lng)
+        return false;
+
+      var centerPoint = turf.point([lng, lat]);
+      var poly = turf.polygon([polygon]);
+      var isPointinPolygon = turf.booleanPointInPolygon(centerPoint, poly);
+      return isPointinPolygon;
+    },
+
+    async getLocationPolygon(address, radius) {
+      let apiPath = "https://nominatim.openstreetmap.org/search.php";
+      let params = {
+        q: address,
+        polygon_geojson: 1,
+        format: "json",
+      };
+
+      var response = await axios.get(apiPath, { params: params });
+      if (!response.data)
+        return [];
+      let cityPolygon = response.data[0].geojson.coordinates[0];
+      if (radius > 0) {
+        cityPolygon = turf.buffer(poly, radius, { units: "miles" });
+        if (cityPolygon.data)
+          cityPolygon = cityPolygon.data[0].geojson.coordinates[0];
+      }
+
+      var str = "";
+      console.log("city polygon:");
+      for (var i = 0; i < cityPolygon.length; i++)
+        str +=
+          cityPolygon[i][0] +
+          "," +
+          cityPolygon[i][1] +
+          "\n";
+      console.log(str);
+      return cityPolygon;
     }
   }
-})
+});
+

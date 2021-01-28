@@ -2,7 +2,7 @@
   <div>
     <!-- Job Listing -->
     <a
-      :href="$route.fullPath +'/item/' +item.id"
+      :href="$route.fullPath + '/item/' + item.id"
       class="job-listing"
       @click.prevent="openItem($event)"
     >
@@ -12,19 +12,20 @@
       <div class="job-listing-details">
         <!-- Logo -->
         <div class="job-listing-company-logo">
-          <img src="images/centers.png" alt>
+          <img src="images/centers.png" alt />
           <!-- <img src="images/company-logo-05.png" alt>  -->
         </div>
 
         <!-- Details -->
         <div class="job-listing-description">
-          <h3 class="job-listing-title">{{item.title | truncate(200)}}</h3>
+          <h3 class="job-listing-title">{{ item.title | truncate(200) }}</h3>
 
           <!-- Job Listing Footer -->
           <div class="job-listing-footer">
             <ul>
               <li>
-                <i class="icon-material-outline-business"></i> Centers Health Care
+                <i class="icon-material-outline-business"></i> Centers Health
+                Care
                 <!-- <div
                   class="verified-badge"
                   data-tippy-placement="top"
@@ -32,21 +33,21 @@
                   data-original-title="Verified Employer"
                 ></div>-->
               </li>
-              <li>
+              <li v-if="item.placeName != 'Other'">
                 <i class="icon-material-outline-location-on"></i>
-                {{item.cityName=="Other"? item.stateName : item.cityName}}
+                {{ item.placeName }}
               </li>
               <li>
                 <i class="icon-material-outline-business-center"></i>
-                {{item.partTime==1?"Part Time" : "Full Time"}}
+                {{ item.partTime == 1 ? "Part Time" : "Full Time" }}
               </li>
               <li>
                 <i class="icon-material-outline-access-time"></i>
-                {{item.date | formatDate}}
+                {{ item.date | formatDate }}
               </li>
               <li>
                 <mark>
-                  View {{showItem?"Less":"More"}}
+                  View {{ showItem ? "Less" : "More" }}
                   <i class="icon-feather-arrow-right"></i>
                 </mark>
               </li>
@@ -60,7 +61,7 @@
     </a>
 
     <transition name="fade">
-      <single-job :itemResult="item" v-if="showItem" @click="openItem(item)"/>
+      <single-job :itemResult="item" v-if="showItem" @click="openItem(item)" />
     </transition>
   </div>
 </template>
@@ -71,18 +72,18 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   props: ["item"],
   components: { SingleJob },
-  data: function() {
+  data: function () {
     return {
-      showItem: false
+      showItem: false,
     };
   },
   computed: {
     ...mapGetters({
-      isMobile: "isMobile"
-    })
+      isMobile: "isMobile",
+    }),
   },
   methods: {
-    openItem: function(item) {
+    openItem: function (item) {
       if (this.isMobile) {
         var element = event.currentTarget;
         var href = element.getAttribute("href");
@@ -90,8 +91,8 @@ export default {
         return;
       }
       this.showItem = !this.showItem;
-    }
-  }
+    },
+  },
 };
 </script>
 

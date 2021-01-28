@@ -17,6 +17,7 @@
     "@nuxtjs/auth": "^4.8.4",
     "@nuxtjs/axios": "^5.8.0",
     "@nuxtjs/toast": "^3.2.1",
+    "@turf/turf": "^6.3.0",
     "body-parser": "^1.18.3",
     "bootstrap-select": "^1.13.18",
     "bootstrap-vue": "^2.0.0-beta",

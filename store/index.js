@@ -26,7 +26,8 @@ export const getters = {
     loggedInUser(state) {
         return true;
       //  return state.auth.user
-    }
+    },
+   
 }
 export const actions = {
     async nuxtServerInit({ commit }, { req }) {
