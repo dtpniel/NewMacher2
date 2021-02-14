@@ -37,7 +37,6 @@ router.post('/jobs/jobsListMobile', function (req, res) {
   if (filter) {
     var serverFilter = {
       mainCategoryId: filter.mainCategoryId,
-      stateId: filter.stateId,
       freeText: filter.freeText
     }
   }

@@ -14,15 +14,25 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="modalBottomLabel">Refine Results</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <jobs-filter-mobile v-if="isMobile"/>
+              <jobs-filter-mobile v-if="isMobile" />
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" id="btnSave" @click="serach()">
+              <button
+                type="button"
+                class="btn btn-default"
+                id="btnSave"
+                @click="serach()"
+              >
                 <span class="d-none d-md-inline">Show Results</span>
                 <span class="d-md-none">Show Results</span>
               </button>
@@ -34,18 +44,20 @@
       <!-- <breadcrumbs/> -->
       <!-- filter -->
       <div class="col-xl-3 col-lg-4">
-        <jobs-filter v-if="!isMobile"/>
+        <jobs-filter v-if="!isMobile" />
       </div>
 
       <!-- results -->
       <div class="col-xl-9 col-lg-8 content-left-offset">
-        <h3 class="page-title">Search Results ({{sum}})</h3>
+        <h3 class="page-title">Search Results ({{ sum }})</h3>
         <div class="notify-box margin-top-15">
           <div class="switch-container">
             <label class="switch">
-              <input type="checkbox">
+              <input type="checkbox" />
               <span class="switch-button"></span>
-              <span class="switch-text">Turn on email alerts for this search</span>
+              <span class="switch-text"
+                >Turn on email alerts for this search</span
+              >
             </label>
           </div>
 
@@ -53,7 +65,13 @@
             <span>Sort by:</span>
 
             <select class="selectpicker hide-tick" @change="sort($event)">
-              <option v-for="item in sortByList" :value="item.id" :key="item.id">{{item.name}}</option>
+              <option
+                v-for="item in sortByList"
+                :value="item.id"
+                :key="item.id"
+              >
+                {{ item.name }}
+              </option>
             </select>
           </div>
         </div>
@@ -66,16 +84,19 @@
           v-if="isMobile"
         >Refine Results</button> -->
 
-
-          <button class="enable-filters-button" v-if="isMobile" data-toggle="modal" data-target="#modalBottom">
-            <i class="enable-filters-button-icon"></i>
-            <span class="show-text">Show Filters</span>
-            <span class="hide-text">Hide Filters</span>
-          </button>
-     
+        <button
+          class="enable-filters-button"
+          v-if="isMobile"
+          data-toggle="modal"
+          data-target="#modalBottom"
+        >
+          <i class="enable-filters-button-icon"></i>
+          <span class="show-text">Show Filters</span>
+          <span class="hide-text">Hide Filters</span>
+        </button>
 
         <!-- results -->
-        <jobs-results/>
+        <jobs-results />
       </div>
     </div>
   </div>
@@ -94,17 +115,17 @@ export default {
     JobsFilter,
     JobsFilterMobile,
     JobsResults,
-    PremiumJobs
+    PremiumJobs,
   },
-  data: function() {
+  data: function () {
     return {
       title: "Jobs",
       sortByList: [
         { value: "type", direction: "desc", name: "Relevance", id: 1 },
         { value: "date", direction: "desc", name: "Newest", id: 2 },
-        { value: "date", direction: "asc", name: "Oldest", id: 3 }
+        { value: "date", direction: "asc", name: "Oldest", id: 3 },
       ],
-      initialFilter: {}
+      initialFilter: {},
     };
   },
   computed: {
@@ -112,8 +133,7 @@ export default {
       sum: "jobs/sum",
       isMobile: "isMobile",
       currentPage: "jobs/currentPage",
-      isMobile: "isMobile",
-      metaTags: "jobs/metaTags"
+      metaTags: "jobs/metaTags",
     }),
     currentPage: {
       get() {
@@ -121,37 +141,35 @@ export default {
       },
       set(value) {
         this.$store.commit("jobs/setcurrentPage", value);
-      }
-    }
+      },
+    },
   },
 
   methods: {
-    sort: function($event) {
+    sort: function ($event) {
       var id = $event.target.value;
-      var sortBy = this.sortByList.find(x => x.id == id);
+      var sortBy = this.sortByList.find((x) => x.id == id);
       this.$store.commit("jobs/setFilter", { sortBy });
     },
-    serach: function() {
+    serach: function () {
       $nuxt.$root.$loading.start();
       this.$store.dispatch("jobs/getJobsMobile").then(() => {
         $nuxt.$root.$loading.finish();
       });
     },
-    errorCaptured: function(error) {
+    errorCaptured: function (error) {
       console.log(error);
     },
-        scroll:function() {
+    scroll: function () {
       window.onscroll = () => {
         let bottomOfWindow =
           document.documentElement.scrollTop + window.innerHeight >=
           document.documentElement.offsetHeight * 0.9;
         if (bottomOfWindow) {
-          console.log(bottomOfWindow);
           this.currentPage++;
-          console.log(this.currentPage);
         }
-      }
-        }
+      };
+    },
 
     // discard: function() {
     //   this.$store.commit("jobs/setFilter", this.initialFilter);
@@ -165,9 +183,9 @@ export default {
 
   mounted() {
     if (process.browser) {
-     // initialCustom();
-         this.scroll();
+      // initialCustom();
+      this.scroll();
     }
-  }
+  },
 };
 </script>

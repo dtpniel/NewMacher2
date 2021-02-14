@@ -1,6 +1,7 @@
 import Vue from 'vue';
 
 import axios from "axios";
+var turf = require('@turf/turf');
 Vue.mixin({
   methods: {
     // isMobile() {
@@ -74,18 +75,32 @@ Vue.mixin({
       return metaTags;
     },
 
-    isPointInPolygon(lng, lat, polygon) {
-      var turf = require('@turf/turf');
+    isPointInPolygon(lng, lat, polygons) {
+      //var turf = require('@turf/turf');
+      var isPointinPolygon;
       if (!lng)
         return false;
-
       var centerPoint = turf.point([lng, lat]);
-      var poly = turf.polygon([polygon]);
-      var isPointinPolygon = turf.booleanPointInPolygon(centerPoint, poly);
+
+      // var poly = polygons.length == 1 ? turf.polygon(polygons) : turf.multiPolygon(polygons);
+
+      for (var i = 0; i < polygons.length; i++) {
+        try {
+          var poly = polygons[i].length == 1 ? turf.multiPolygon([polygons[i]]) : turf.polygon([polygons[i]])
+          isPointinPolygon = turf.booleanPointInPolygon(centerPoint, poly, { ignoreBoundary: true });
+          if (isPointinPolygon)
+            return isPointinPolygon;
+        }
+        catch (ex) {
+          console.log(ex);
+        }
+      };
+
       return isPointinPolygon;
     },
 
     async getLocationPolygon(address, radius) {
+      //  var turf = require('@turf/turf');
       let apiPath = "https://nominatim.openstreetmap.org/search.php";
       let params = {
         q: address,
@@ -94,25 +109,29 @@ Vue.mixin({
       };
 
       var response = await axios.get(apiPath, { params: params });
-      if (!response.data)
+      if (!response.data || response.data.length == 0)
         return [];
-      let cityPolygon = response.data[0].geojson.coordinates[0];
+      let cityPolygons = response.data[0].geojson.coordinates;
       if (radius > 0) {
-        cityPolygon = turf.buffer(poly, radius, { units: "miles" });
-        if (cityPolygon.data)
-          cityPolygon = cityPolygon.data[0].geojson.coordinates[0];
+        cityPolygons.forEach((element, index) => {
+          var poly = element.length == 1 ? turf.multiPolygon([element]) : turf.polygon([element])
+          var bufferredPolygon = turf.buffer(poly, radius, { units: "miles" });
+          if (bufferredPolygon.geometry)
+            cityPolygons[index] = bufferredPolygon.geometry.coordinates[0];
+        });
+
       }
 
-      var str = "";
-      console.log("city polygon:");
-      for (var i = 0; i < cityPolygon.length; i++)
-        str +=
-          cityPolygon[i][0] +
-          "," +
-          cityPolygon[i][1] +
-          "\n";
-      console.log(str);
-      return cityPolygon;
+      // var str = "";
+      // console.log("city polygon:");
+      // for (var i = 0; i < cityPolygons[2].length; i++)
+      //   str +=
+      //     cityPolygons[0][i][0] +
+      //     "," +
+      //     cityPolygons[0][i][1] +
+      //     "\n";
+      // console.log(str);
+      return cityPolygons;
     }
   }
 });

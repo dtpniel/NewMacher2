@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { getField, updateField } from 'vuex-map-fields';
-import turf from '@turf/turf';
+// import global from './global.js';
 var dataIndex = {
   jobs: 0,
   // states: 1,
@@ -9,9 +9,37 @@ var dataIndex = {
   categories: 2,
   mainCategorySEO: 3,
   categorySEO: 4,
+  topLocations: 5,
+  locationSEO: 6
   // stateSEO: 5,
   // citySEO: 6,
   //premiumJobs: 9
+};
+
+//helper functions
+
+function isPointInPolygon(lng, lat, polygons) {
+  var turf = require('@turf/turf');
+  var isPointinPolygon;
+  if (!lng)
+    return false;
+  var centerPoint = turf.point([lng, lat]);
+
+  // var poly = polygons.length == 1 ? turf.polygon(polygons) : turf.multiPolygon(polygons);
+
+  for (var i = 0; i < polygons.length; i++) {
+    try {
+      var poly = polygons[i].length == 1 ? turf.multiPolygon([polygons[i]]) : turf.polygon([polygons[i]])
+      isPointinPolygon = turf.booleanPointInPolygon(centerPoint, poly, { ignoreBoundary: true });
+      if (isPointinPolygon)
+        return isPointinPolygon;
+    }
+    catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  return isPointinPolygon;
 };
 
 export const state = () => ({
@@ -131,6 +159,7 @@ export const state = () => ({
   internshipData: [{ name: "Internship", id: 1 }],
   temporaryData: [{ name: "Temporary", id: 1 }],
   locationData: [],
+  topLocationsData: [],
   metaTags: {
     title: "Jewish Jobs on Macher: The Largest Jewish Classifieds Website in the US",
     description: "The largest jewish jobs website in NYC, Brooklyn, Boro Park, Five Towns, Crown Heights, Woodmere, Monsey, Lakewood and more.",
@@ -170,7 +199,12 @@ export const mutations = {
   setCategoryData(state, data) {
     state.categoryIdData = data;
   },
-
+  setTopLocationsData(state, data) {
+    state.topLocationsData = data;
+  },
+  setLocationData(state, data) {
+    state.locationData = data;
+  },
   // setpremiumJobs(state, data) {
   //   state.premiumJobs = data;
   // },
@@ -197,23 +231,28 @@ export const mutations = {
 
   setperPage(state, perPage) {
     state.perPage = perPage;
+  },
+  async setLocation(state, locationName) {
+    state.filter.location = await this.$global.getLocationPolygon(locationName)
   }
 
 };
 
 export const getters = {
 
-  filteredJobs: state => {
+  filteredJobs: (state) => {
     var filter = state.filter;
-
     return state.jobs
       .filter(x => {
         return (
-          // (filter.cityId.length == 0 ||
-          //   filter.cityId.indexOf(x.cityId) > -1) &&
+        
+          ((filter.location.length == 0 || filter.location == 0) ||
+            isPointInPolygon(x.lng, x.lat, filter.location)) &&
 
-          (filter.location.length == 0 ||
-            $nuxt.isPointInPolygon(x.lng, x.lat, filter.location)) &&
+          // ((filter.location.length == 0 || filter.location == 0) ||
+          //   (typeof nuxt === 'undefined') ||
+          //   !(typeof nuxt === 'undefined') && nuxt.isPointInPolygon(x.lng, x.lat, filter.location)) &&
+
           (filter.categoryId.length == 0 ||
             filter.categoryId.indexOf(x.categoryId) > -1) &&
           (
@@ -282,16 +321,8 @@ export const getters = {
 
 
 export const actions = {
-  isPointInPolygon(lng, lat, polygon) {
-    console.log($nuxt);
-    var turf = require('@turf/turf');
-    if (!lng)
-      return false;
-    var centerPoint = turf.point([lng, lat]);
-    var poly = turf.polygon([polygon]);
-    var isPointinPolygon = turf.booleanPointInPolygon(centerPoint, poly);
-    return isPointinPolygon;
-  },
+
+
   async getJobs({ commit, state }) {
     return axios.post(process.env.baseApi + "/jobs/jobsList", { filter: state.filter })
       .then(jobs => {
@@ -327,10 +358,14 @@ export const actions = {
 
   async getJobsQueryString({ commit, dispatch }, data) {
     var route = data.route;
+    var location = data.qstring.qstring.location;
+    if (location)
+      await commit("setLocation", location);
     return axios.post(process.env.baseApi + "/jobs/jobsQueryString", data.qstring)
       .then(jobs => {
         if (!jobs.data || !jobs.data.data)
           return;
+
         var data = jobs.data.data.recordsets;
         // data[dataIndex.states].unshift({ id: 0, name: "All States" });
         // data[dataIndex.mainCategories].unshift({ id: 0, name: "All Categories" });
@@ -339,9 +374,12 @@ export const actions = {
         // commit("setCityData", data[dataIndex.cities]);
         commit("setMainCategoryData", data[dataIndex.mainCategories]);
         commit("setCategoryData", data[dataIndex.categories]);
+        commit("setTopLocationsData", data[dataIndex.topLocations]);
+        commit("setLocationData", data[dataIndex.locationSEO]);
         // commit("setpremiumJobs", data[dataIndex.premiumJobs]);
         dispatch("setMetaTags", data);
         //dispatch("setMetaTags", { data: data, route: route });
+
       }
       )
   },
@@ -438,7 +476,7 @@ export const actions = {
     var title;
     var description;
     var qstring1, qstring2;
-    var location = "";
+    var locationName = "";
     var canonical = "";
 
     //grap the information from db result
@@ -460,12 +498,13 @@ export const actions = {
       commit("setFilter", { categoryId: [category[0].categoryId] });
     }
 
-    // var stateUS = data[dataIndex.stateSEO]
-    // if (stateUS[0]) {
-    //   location = " in " + stateUS[0].title;
-    //   params.push({ name: "stateId", id: stateUS[0].stateId });
-    //   commit("setFilter", { stateId: stateUS[0].stateId });
-    // }
+    var location = data[dataIndex.locationSEO]
+
+    if (location[0]) {
+      locationName = " in " + location[0].title;
+      params.push({ name: "location", id: location[0].name });
+      commit("setFilter", { locationName: location[0].name });
+    }
 
     // var city = data[dataIndex.citySEO]
     // if (city[0]) {
@@ -489,16 +528,16 @@ export const actions = {
 
 
     //final: set the tags
-    metaTags.title = "Jewish " + title + " Jobs" + location + " on Macher";
+    metaTags.title = "Jewish " + title + " Jobs" + locationName + " on Macher";
     metaTags.description = "Search here for thousands of jewish jobs - "
-      + description + location +
+      + description + locationName +
       " and more on Macher, the largest jewish classifieds website";
     metaTags.socialTitle = title + " Jobs";
     metaTags.socialDescription = description + " Jobs";
     metaTags.canonical = canonical;
 
     metaTags.categoryName = title;
-    metaTags.location = location;
+    metaTags.location = locationName;
     commit("setMetaTags", metaTags);
   },
 

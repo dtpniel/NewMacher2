@@ -11,7 +11,7 @@
           <div class="left-side">
             <!-- Logo -->
             <div id="logo">
-              <a href="index.html">
+              <a href="\">
                 <img src="images/newlogo.png" alt />
               </a>
             </div>

@@ -74,7 +74,7 @@ module.exports = {
 
   plugins: [
     '~plugins/filters.js',
-    '~plugins/mixins.js',
+    { src: '~plugins/mixins.js' },
     { src: '~/plugins/vuelidate', ssr: true },
     { src: '~plugins/global.js' }
     // { src: '~plugins/password-strength.js', ssr: false }

@@ -1,7 +1,7 @@
 <template>
   <div class="main-jobs">
     <div class="margin-top-30"></div>
-    <jobs-list/>
+    <jobs-list />
   </div>
 </template>
 
@@ -13,20 +13,20 @@ import { mapState } from "vuex";
 import axios from "axios";
 
 export default {
-  data: function() {
+  data: function () {
     return {
-      mainCategory: this.$route.params.mainCategory
+      mainCategory: this.$route.params.mainCategory,
     };
   },
 
   computed: {
     ...mapState("jobs", {
-      metaTags: state => state.metaTags
-    })
+      metaTags: (state) => state.metaTags,
+    }),
   },
 
   components: {
-    JobsList
+    JobsList,
   },
 
   async asyncData({ app, params, store }) {
@@ -34,6 +34,7 @@ export default {
     var query = app.context.route.query;
     var stateId = query.stateId ? query.stateId : 0;
     var cityId = query.cityId ? query.cityId : "";
+    var location = query.location;
     var mainCategory =
       params.mainCategory && params.mainCategory != "all"
         ? params.mainCategory
@@ -44,25 +45,26 @@ export default {
         mainCategory: mainCategory,
         stateId: stateId,
         cityId: cityId,
-        isMobile: isMobile
-      }
+        isMobile: isMobile,
+        location: location,
+      },
     };
     await store.dispatch("jobs/getJobsQueryString", {
       qstring: qstring,
-      route: app.context.route
+      route: app.context.route,
     });
   },
- mounted() {
+  mounted() {
     if (process.browser) {
-     require("bootstrap-select");
+      require("bootstrap-select");
     }
- },
+  },
   head() {
     return {
       title: this.metaTags.title,
       link: [{ rel: "canonical", href: this.metaTags.canonical }],
-      meta: this.createMetaTags(this.metaTags)
+      meta: this.createMetaTags(this.metaTags),
     };
-  }
+  },
 };
 </script>

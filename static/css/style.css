@@ -18304,24 +18304,42 @@ h4.page-number {
 	padding: 10px 10px 20px 20px
 }
 
-
 .text-primary {
-    color: #007bff!important;
+	color: #007bff!important;
 }
+
 .text-secondary {
-    color: #6c757d!important;
+	color: #6c757d!important;
 }
+
 .text-success {
-    color: #28a745!important;
+	color: #28a745!important;
 }
 
 .text-danger {
-    color: #dc3545!important;
+	color: #dc3545!important;
 }
+
 .text-warning {
-    color: #ffc107!important;
+	color: #ffc107!important;
 }
 
 .text-info {
-    color: #17a2b8!important;
+	color: #17a2b8!important;
+}
+
+.intro-banner-search-form .intro-search-field.with-label-mobile {
+	margin-top: 0;
+}
+
+ul.topLocations {
+	margin-left: -35px;
+}
+
+ul.topLocations li {
+	list-style: none;
+}
+
+ul.topLocations li a {
+	display: block !important;
 }

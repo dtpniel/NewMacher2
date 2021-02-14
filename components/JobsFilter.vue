@@ -35,7 +35,6 @@
         <option value="20">20 miles</option>
         <option value="25">25 miles</option>
         <option value="50">50 miles</option>
-        <option value="0">Any distance</option>
       </select>
     </div>
 
@@ -176,6 +175,25 @@
         </div>
       </div>
     </div>
+
+    <!-- Top Locations -->
+    <div class="sidebar-widget">
+      <h3>Top Locations</h3>
+      <div>
+        <ul class="topLocations">
+          <li v-for="item in topLocationsData" :value="item.id" :key="item.id">
+            <a
+              class="selectlink"
+              :href="
+                '/' + $route.params.mainCategory + '?location=' + item.longName
+              "
+            >
+              {{ item.name }}</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -209,6 +227,8 @@ export default {
       partTimeData: (state) => state.partTimeData,
       internshipData: (state) => state.internshipData,
       temporaryData: (state) => state.temporaryData,
+      topLocationsData: (state) => state.topLocationsData,
+      locationData: (state) => state.locationData,
       filterDefinition: (state) => state.filterDefinition,
     }),
     ...mapFields("jobs", [
@@ -240,6 +260,7 @@ export default {
         (x) => x.id == item.id && x.name == item.name
       );
       if (index > -1) arr.splice(index, 1);
+      if (item.name == "location") this.removeLocationItem();
 
       //remove filter id
       var filterItem = this[item.name];
@@ -265,6 +286,12 @@ export default {
       //search again based on new filter
       this.setFilter(undefined, item.name);
     },
+    removeLocationItem() {
+      var input = document.getElementById("autocomplete-input");
+      input.placeholder = "City, State or ZIP";
+      input.value = "";
+      this.location = 0;
+    },
 
     addSingleFilterItem: function (id, name) {
       //don't add item when it's undefined
@@ -273,6 +300,7 @@ export default {
       var arr = this[name + "Data"];
 
       var selected = arr ? arr.filter((x) => x.id == id)[0] : undefined;
+
       var text = selected ? selected.name : "";
       if (name == "freeText") text = id;
 
@@ -289,6 +317,7 @@ export default {
     reset: function () {
       this.filterItems = [];
       this.resetFilter();
+      this.removeLocationItem();
       $nuxt.$root.$loading.start();
       this.search().then(() => {
         $nuxt.$root.$loading.finish();
@@ -301,6 +330,7 @@ export default {
         var arr = this.filterItems;
         //remove existing filter item
         this.filterItems = arr.filter((x) => x.name !== filterItemDef.name);
+        if (filterItemDef.name == "location" && id) id = 1;
 
         this.addSingleFilterItem(id, filterItemDef.name);
       } else {
@@ -356,10 +386,9 @@ export default {
 
     locationChanged() {
       this.setLocation();
-
-      this.setFilter(undefined, "location");
     },
     async setLocation() {
+      $nuxt.$root.$loading.start();
       const place = this.autocomplete.getPlace();
 
       var input = document.getElementById("autocomplete-input");
@@ -373,10 +402,20 @@ export default {
       setTimeout(function () {
         input.value = city;
       }, 500);
-      this.locationData = [{ name: city, id: 0 }];
+
+      var locationData = [{ name: city, id: 1 }];
+
+      this.$store.commit("jobs/setLocationData", locationData);
 
       var address = place.formatted_address;
-      this.location = await this.getLocationPolygon(address, this.radius);
+
+      this.location = await this.$global.getLocationPolygon(
+        address,
+        this.radius
+      );
+
+      this.setFilter(undefined, "location");
+      $nuxt.$root.$loading.finish();
     },
   },
 
@@ -413,10 +452,17 @@ export default {
       this.addSingleFilterItem(this.categoryId, "categoryId");
     }
 
-    // if (this.stateId > 0) {
-    //   $("#stateId").val(this.stateId);
-    //   this.addSingleFilterItem(this.stateId, "stateId");
-    // }
+    if (
+      this.location &&
+      this.location.length > 0 &&
+      this.locationData.length > 0
+    ) {
+      var id = this.locationData.length > 0 ? this.locationData[0].id : 0;
+      var input = document.getElementById("autocomplete-input");
+      input.value = this.locationData[0].name;
+
+      this.addSingleFilterItem(id, "location");
+    }
 
     // if (this.cityId > 0) {
     //   $("#cityId").val(this.cityId);
