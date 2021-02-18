@@ -22,10 +22,10 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import ResultItem from "~/components/ResultItem";
+import ResultItem from "~/components/realestate/REResultItem";
 
 export default {
-  name: "JobsResults",
+  name: "REResults",
   components: { ResultItem },
   data: function() {
     return {

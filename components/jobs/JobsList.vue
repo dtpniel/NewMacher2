@@ -103,10 +103,10 @@
 </template>
 <script>
 import axios from "axios";
-import JobsResults from "~/components/JobsResults";
-import JobsFilter from "~/components/JobsFilter";
-import JobsFilterMobile from "~/components/JobsFilterMobile";
-import PremiumJobs from "~/components/PremiumJobs";
+import JobsResults from "~/components/jobs/JobsResults";
+import JobsFilter from "~/components/jobs/JobsFilter";
+import JobsFilterMobile from "~/components/jobs/JobsFilterMobile";
+import PremiumJobs from "~/components/jobs/PremiumJobs";
 import { mapGetters, mapState } from "vuex";
 
 export default {

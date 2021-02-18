@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import SingleJob from "~/components/SingleJob";
+import SingleJob from "~/components/jobs/SingleJob";
 import { Route } from "vue-router";
 import { mapState } from "vuex";
 

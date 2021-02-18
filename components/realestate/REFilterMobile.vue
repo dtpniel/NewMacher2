@@ -9,6 +9,7 @@
       />
       <div class="clearfix"></div>
     </div>
+    <!-- Location -->
     <div class="sidebar-widget">
       <h3>Location</h3>
       <!-- Google location -->
@@ -81,7 +82,7 @@
           :key="item.id"
         >
           {{ item.name }} ({{ item.sum }})
-          <a class="selectlink" :href="'/' + item.qstring"
+          <a class="selectlink" :href="'/jobs/' + item.qstring"
             >{{ item.name }} ({{ item.sum }})</a
           >
         </option>
@@ -102,7 +103,7 @@
           {{ item.name }} ({{ item.sum }})
           <a
             class="selectlink"
-            :href="'/' + $route.params.mainCategory + '/' + item.qstring"
+            :href="'/jobs/' + $route.params.mainCategory + '/' + item.qstring"
             >{{ item.name }} ({{ item.sum }})</a
           >
         </option>
@@ -122,8 +123,7 @@
               v-model="freelance"
               @change="setFilter($event)"
             />
-            <span class="switch-button"></span>
-            Freelance
+            <span class="switch-button"></span> Freelance
           </label>
         </div>
 
@@ -185,7 +185,7 @@
             <a
               class="selectlink"
               :href="
-                '/' + $route.params.mainCategory + '?location=' + item.longName
+                '/jobs/' + $route.params.mainCategory + '?location=' + item.longName
               "
             >
               {{ item.name }}</a
@@ -198,9 +198,9 @@
 </template>
 
 <script>
-import FilterItems from "~/components/FilterItems";
+import FilterItems from "~/components/jobs/FilterItems";
+import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
-
 import { mapMutations, mapActions, mapState } from "vuex";
 import { createHelpers } from "vuex-map-fields";
 const { mapFields } = createHelpers({
@@ -209,19 +209,18 @@ const { mapFields } = createHelpers({
 });
 
 export default {
-  name: "JobsFilter",
+  name: "REFilterMobile",
 
   data: function () {
     return {
       title: "Jobs",
       filterItems: [],
-      autocomplete: {},
+      categoryIdData: [],
     };
   },
   computed: {
     ...mapState("jobs", {
       mainCategoryIdData: (state) => state.mainCategoryIdData,
-      categoryIdData: (state) => state.categoryIdData,
       freelanceData: (state) => state.freelanceData,
       fromHomeData: (state) => state.fromHomeData,
       partTimeData: (state) => state.partTimeData,
@@ -232,8 +231,6 @@ export default {
       filterDefinition: (state) => state.filterDefinition,
     }),
     ...mapFields("jobs", [
-      // "stateId",
-      // "cityId",
       "mainCategoryId",
       "categoryId",
       "freelance",
@@ -300,10 +297,9 @@ export default {
       var arr = this[name + "Data"];
 
       var selected = arr ? arr.filter((x) => x.id == id)[0] : undefined;
-
       var text = selected ? selected.name : "";
-      if (name == "freeText") text = id;
 
+      if (name == "freeText") text = id;
       if (!text) return;
 
       var item = {
@@ -318,10 +314,11 @@ export default {
       this.filterItems = [];
       this.resetFilter();
       this.removeLocationItem();
-      $nuxt.$root.$loading.start();
-      this.search().then(() => {
-        $nuxt.$root.$loading.finish();
-      });
+    },
+
+    qstringPrefix() {
+      if (this.$route.query) return "&";
+      else return "?";
     },
 
     addFilterItem: function (filterItemDef) {
@@ -352,7 +349,6 @@ export default {
       }
     },
     setFilter: function ($event, name) {
-      //if ($event && !$event.currentTarget.value) return;
       var self = this;
       var name = $event && $event.target.id ? $event.target.id : name;
       var filterItemDef = this.filterDefinition.find((x) => x.name == name);
@@ -364,25 +360,23 @@ export default {
           (x) => x.name == filterItemDef.subCategory
         );
         this.addFilterItem(item);
+        this["set" + filterItemDef.subCategory + "Data"]();
       }
 
       this.addFilterItem(filterItemDef);
-      if (filterItemDef.server) {
-        $nuxt.$root.$loading.start();
-        this.search().then(() => {
-          $nuxt.$root.$loading.finish();
+    },
+
+    setcategoryIdData: function () {
+      var self = this;
+      return axios
+        .post(process.env.baseApi + "/jobs/categories", {
+          mainCategoryId: this.mainCategoryId,
+        })
+        .then((categories) => {
+          var data = categories.data.data.recordsets;
+          self.categoryIdData = data[0];
         });
-      }
     },
-    qstringPrefix() {
-      if (this.$route.query) return "&";
-      else return "?";
-    },
-    ...mapActions("jobs", {
-      search: "getJobs",
-      resetFilter: "resetFilter",
-    }),
-    ...mapMutations("jobs", { updateFilter: "setFilter" }),
 
     locationChanged() {
       this.setLocation();
@@ -402,13 +396,11 @@ export default {
       setTimeout(function () {
         input.value = city;
       }, 500);
-
       var locationData = [{ name: city, id: 1 }];
 
       this.$store.commit("jobs/setLocationData", locationData);
 
       var address = place.formatted_address;
-
       this.location = await this.$global.getLocationPolygon(
         address,
         this.radius
@@ -417,8 +409,16 @@ export default {
       this.setFilter(undefined, "location");
       $nuxt.$root.$loading.finish();
     },
+
+    ...mapActions("jobs", { resetFilter: "resetFilter" }),
+    ...mapMutations("jobs", { updateFilter: "setFilter" }),
   },
 
+  updated: function () {
+    this.$nextTick(function () {
+      $(".selectpicker").selectpicker("refresh");
+    });
+  },
   head() {
     return {
       script: [
@@ -430,13 +430,6 @@ export default {
       ],
     };
   },
-  updated: function () {
-    this.$nextTick(function () {
-      require("bootstrap-select");
-      $(this.$el).find(".selectpicker").selectpicker("refresh");
-      //$(".selectpicker").selectpicker("refresh");
-    });
-  },
   mounted() {
     if (process.browser) {
       require("bootstrap-select");
@@ -445,6 +438,7 @@ export default {
     if (this.mainCategoryId > 0) {
       $("#mainCategoryId").val(this.mainCategoryId);
       this.addSingleFilterItem(this.mainCategoryId, "mainCategoryId");
+      Object.assign(this.categoryIdData, this.$store.state.jobs.categoryIdData);
     }
 
     if (this.categoryId > 0) {
@@ -464,10 +458,6 @@ export default {
       this.addSingleFilterItem(id, "location");
     }
 
-    // if (this.cityId > 0) {
-    //   $("#cityId").val(this.cityId);
-    //   this.addSingleFilterItem(this.cityId, "cityId");
-    // }
     var options = {
       types: ["geocode"],
       language: "en",

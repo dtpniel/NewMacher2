@@ -2,7 +2,7 @@
   <div>
     <!-- Job Listing -->
     <a
-      :href="$route.fullPath + '/item/' + item.id"
+      :href="$route.path + '/item/' + item.id"
       class="job-listing"
       @click.prevent="openItem($event)"
     >
@@ -66,7 +66,7 @@
   </div>
 </template>
 <script>
-import SingleJob from "~/components/SingleJob";
+import SingleJob from "~/components/jobs/SingleJob";
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
