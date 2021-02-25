@@ -103,10 +103,9 @@
 </template>
 <script>
 import axios from "axios";
-import JobsResults from "~/components/jobs/JobsResults";
-import JobsFilter from "~/components/jobs/JobsFilter";
-import JobsFilterMobile from "~/components/jobs/JobsFilterMobile";
-import PremiumJobs from "~/components/jobs/PremiumJobs";
+import JobsResults from "./JobsResults";
+import JobsFilter from "./JobsFilter";
+import JobsFilterMobile from "./JobsFilterMobile";
 import { mapGetters, mapState } from "vuex";
 
 export default {
@@ -115,7 +114,6 @@ export default {
     JobsFilter,
     JobsFilterMobile,
     JobsResults,
-    PremiumJobs,
   },
   data: function () {
     return {
@@ -126,6 +124,17 @@ export default {
         { value: "date", direction: "asc", name: "Oldest", id: 3 },
       ],
       initialFilter: {},
+    };
+  },
+  head() {
+    return {
+      script: [
+        {
+          //src: "https://apis.google.com/js/platform.js"
+          src:
+            "https://maps.googleapis.com/maps/api/js?key=AIzaSyBrTrorHTE-6cPNubZrc0OWVfmf9-4osaw&libraries=places&language=en",
+        },
+      ],
     };
   },
   computed: {

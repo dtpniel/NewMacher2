@@ -489,7 +489,7 @@
     <!-- Page Content
     ==================================================-->
     <search v-if="!isHomePage()" />
-    <top-banners v-if="!isHomePage() && !$store.getters.isMobile" />
+    <!-- <top-banners v-if="!isHomePage() && !$store.getters.isMobile" /> -->
     <nuxt />
 
     <!-- Footer

@@ -198,51 +198,51 @@
 </template>
 
 <script>
-import FilterItems from "~/components/jobs/FilterItems";
+import FilterItems from "~/components/realestate/REFilterItems";
 import axios from "axios";
 import { createNamespacedHelpers } from "vuex";
 import { mapMutations, mapActions, mapState } from "vuex";
 import { createHelpers } from "vuex-map-fields";
-const { mapFields } = createHelpers({
-  getterType: "getFilter",
-  mutationType: "updateFilter",
-});
+// const { mapFields } = createHelpers({
+//   getterType: "getFilter",
+//   mutationType: "updateFilter",
+// });
 
 export default {
   name: "REFilterMobile",
 
-  data: function () {
-    return {
-      title: "Jobs",
-      filterItems: [],
-      categoryIdData: [],
-    };
-  },
-  computed: {
-    ...mapState("jobs", {
-      mainCategoryIdData: (state) => state.mainCategoryIdData,
-      freelanceData: (state) => state.freelanceData,
-      fromHomeData: (state) => state.fromHomeData,
-      partTimeData: (state) => state.partTimeData,
-      internshipData: (state) => state.internshipData,
-      temporaryData: (state) => state.temporaryData,
-      topLocationsData: (state) => state.topLocationsData,
-      locationData: (state) => state.locationData,
-      filterDefinition: (state) => state.filterDefinition,
-    }),
-    ...mapFields("jobs", [
-      "mainCategoryId",
-      "categoryId",
-      "freelance",
-      "partTime",
-      "temporary",
-      "fromHome",
-      "internship",
-      "freeText",
-      "radius",
-      "location",
-    ]),
-  },
+  // data: function () {
+  //   return {
+  //     title: "Jobs",
+  //     filterItems: [],
+  //     categoryIdData: [],
+  //   };
+  // },
+  // computed: {
+  //   ...mapState("jobs", {
+  //     mainCategoryIdData: (state) => state.mainCategoryIdData,
+  //     freelanceData: (state) => state.freelanceData,
+  //     fromHomeData: (state) => state.fromHomeData,
+  //     partTimeData: (state) => state.partTimeData,
+  //     internshipData: (state) => state.internshipData,
+  //     temporaryData: (state) => state.temporaryData,
+  //     topLocationsData: (state) => state.topLocationsData,
+  //     locationData: (state) => state.locationData,
+  //     filterDefinition: (state) => state.filterDefinition,
+  //   }),
+  //   ...mapFields("jobs", [
+  //     "mainCategoryId",
+  //     "categoryId",
+  //     "freelance",
+  //     "partTime",
+  //     "temporary",
+  //     "fromHome",
+  //     "internship",
+  //     "freeText",
+  //     "radius",
+  //     "location",
+  //   ]),
+  // },
 
   components: {
     FilterItems,
@@ -419,17 +419,7 @@ export default {
       $(".selectpicker").selectpicker("refresh");
     });
   },
-  head() {
-    return {
-      script: [
-        {
-          //src: "https://apis.google.com/js/platform.js"
-          src:
-            "https://maps.googleapis.com/maps/api/js?key=AIzaSyBrTrorHTE-6cPNubZrc0OWVfmf9-4osaw&libraries=places&language=en",
-        },
-      ],
-    };
-  },
+
   mounted() {
     if (process.browser) {
       require("bootstrap-select");

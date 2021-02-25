@@ -1,77 +1,15 @@
 <template>
   <div>
-    <!-- Job Listing -->
-    <a
-      :href="$route.path + '/item/' + item.id"
-      class="job-listing"
-      @click.prevent="openItem($event)"
-    >
-      <!-- <a href="single-job-page.html" class="job-listing"> -->
-      <!-- Job Listing Details -->
-
-      <div class="job-listing-details">
-        <!-- Logo -->
-        <div class="job-listing-company-logo">
-          <img src="images/centers.png" alt />
-          <!-- <img src="images/company-logo-05.png" alt>  -->
-        </div>
-
-        <!-- Details -->
-        <div class="job-listing-description">
-          <h3 class="job-listing-title">{{ item.title | truncate(200) }}</h3>
-
-          <!-- Job Listing Footer -->
-          <div class="job-listing-footer">
-            <ul>
-              <li>
-                <i class="icon-material-outline-business"></i> Centers Health
-                Care
-                <!-- <div
-                  class="verified-badge"
-                  data-tippy-placement="top"
-                  data-tippy
-                  data-original-title="Verified Employer"
-                ></div>-->
-              </li>
-              <li v-if="item.placeName != 'Other'">
-                <i class="icon-material-outline-location-on"></i>
-                {{ item.placeName }}
-              </li>
-              <li>
-                <i class="icon-material-outline-business-center"></i>
-                {{ item.partTime == 1 ? "Part Time" : "Full Time" }}
-              </li>
-              <li>
-                <i class="icon-material-outline-access-time"></i>
-                {{ item.date | formatDate }}
-              </li>
-              <li>
-                <mark>
-                  View {{ showItem ? "Less" : "More" }}
-                  <i class="icon-feather-arrow-right"></i>
-                </mark>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Bookmark -->
-        <span class="bookmark-icon"></span>
-      </div>
-    </a>
-
-    <transition name="fade">
-      <single-job :itemResult="item" v-if="showItem" @click="openItem(item)" />
-    </transition>
+   result item
   </div>
 </template>
 <script>
-import SingleJob from "~/components/realestate/SingleRE";
+import SingleRE from "~/components/realestate/SingleRE";
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
   props: ["item"],
-  components: { SingleJob },
+  components: { SingleRE },
   data: function () {
     return {
       showItem: false,

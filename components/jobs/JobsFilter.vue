@@ -419,17 +419,7 @@ export default {
     },
   },
 
-  head() {
-    return {
-      script: [
-        {
-          //src: "https://apis.google.com/js/platform.js"
-          src:
-            "https://maps.googleapis.com/maps/api/js?key=AIzaSyBrTrorHTE-6cPNubZrc0OWVfmf9-4osaw&libraries=places&language=en",
-        },
-      ],
-    };
-  },
+ 
   updated: function () {
     this.$nextTick(function () {
       require("bootstrap-select");

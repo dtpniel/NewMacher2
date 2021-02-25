@@ -43,6 +43,7 @@ module.exports = {
     script: [
       { src: '/js/jquery-3.3.1.min.js' },
       { src: '/js/jquery-migrate-3.0.0.min.js' },
+      { src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBrTrorHTE-6cPNubZrc0OWVfmf9-4osaw&libraries=places&language=en' },
       { src: '/js/mmenu.min.js' },
       { src: '/js/tippy.all.min.js' },
       { src: '/js/simplebar.min.js' },
@@ -57,7 +58,10 @@ module.exports = {
       { src: '/js/custom.1.js' },
       { src: '/js/popper.min.js' },
       { src: '/js/util.js' },
-      { src: '/js/modal.js' }
+      { src: '/js/modal.js' },
+      { src: '/js/markerclusterer.js' },
+      { src: '/js/infobox.min.js' },
+   
     ]
   },
   /*
