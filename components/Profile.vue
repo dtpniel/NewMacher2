@@ -484,7 +484,15 @@
 </template>
 
 <script>
+    import {mapState, mapActions} from 'vuex';
+    import {ACTIONS}       from '../store';
+
     export default {
+        methods: {
+            ...mapActions({
+                loggedUser: ACTIONS.LOGGED_USER
+            })
+        },
         computed: {
             countriesList() {
                 return [
@@ -843,8 +851,14 @@
                 ]
             },
             skillTags() {
-                return ['Angular', 'VueJs', 'iOS', 'Android', 'Laravel']
-            }
+                return ['Angular', 'VueJs', 'iOS', 'Android', 'Laravel'];
+            },
+            ...mapState({
+                user: state => state.user
+            })
+        },
+        mounted() {
+            this.loggedUser({email: 'test@test.com', socialLogin: 1});
         }
     };
 </script>

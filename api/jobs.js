@@ -1,22 +1,21 @@
-
 const db = require('./db');
-const { Router } = require('express')
-const router = Router()
-var bodyParser = require('body-parser');
+const { Router } = require('express');
+const router = Router();
+const bodyParser = require('body-parser');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.post('/jobs/jobsList', function (req, res) {
   // var userInput = [];
-  var filter = req.body["filter"];
-  var params = req.body["params"];
+  const filter = req.body["filter"];
+  const params = req.body["params"];
 
   if (filter) {
     var serverFilter = {
       mainCategoryId: filter.mainCategoryId,
       // stateId: filter.stateId,
       freeText: filter.freeText,
-     
+
     }
   }
   if (params) {
@@ -118,4 +117,4 @@ router.post('/jobs/categories', function (req, res) {
   )
 });
 
-module.exports = router
+module.exports = router;
