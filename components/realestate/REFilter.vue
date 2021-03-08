@@ -1,5 +1,5 @@
 <template>
-	<div class="full-page-sidebar hidden-sidebar">
+	<div class="full-page-sidebar">
 		<div class="full-page-sidebar-inner" data-simplebar>
 
 			<div class="sidebar-container">
