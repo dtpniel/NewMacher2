@@ -74,9 +74,10 @@ module.exports = {
 
   plugins: [
     '~plugins/filters.js',
-    { src: '~plugins/mixins.js' },
-    { src: '~/plugins/vuelidate', ssr: true },
-    { src: '~plugins/global.js' }
+    '@/plugins/antd-ui',
+    {src: '~plugins/mixins.js'},
+    {src: '~/plugins/vuelidate', ssr: true},
+    {src: '~plugins/global.js'}
     // { src: '~plugins/password-strength.js', ssr: false }
     //   { src: '~plugins/vue-select', ssr: false }
   ],
@@ -135,14 +136,13 @@ module.exports = {
         '$': 'jquery',
         'jQuery': 'jquery',
         'window.jQuery': 'jquery'
-      })
-      ,
+      }),
       new webpack.ProvidePlugin({
         'selectpicker': 'bootstrap-select'
       })
     ],
     extractCSS: true,
-    extend(config, { isClient }) {
+    extend(config, {isClient}) {
       // config.devtool = 'source-map'
       // return Object.assign({}, config, {
       //   devtool: 'source-map'
@@ -154,4 +154,4 @@ module.exports = {
 
     }
   }
-}
+};
