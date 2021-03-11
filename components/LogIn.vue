@@ -10,12 +10,12 @@
                 </div>
                 <a-form>
                     <a-form-item>
-                        <a-input placeholder="Email address">
+                        <a-input placeholder="Email address" v-model="email">
                             <a-icon slot="prefix" style="color: rgba(0,0,0,.25)" type="user"/>
                         </a-input>
                     </a-form-item>
                     <a-form-item>
-                        <a-input placeholder="Password" type="password">
+                        <a-input placeholder="Password" type="password" v-model="password">
                             <a-icon slot="prefix" style="color: rgba(0,0,0,.25)" type="lock"/>
                         </a-input>
                     </a-form-item>
@@ -195,36 +195,36 @@
     };
 </script>
 
-<style scoped>
-    .title {
-        display: flex;
-        justify-content: center;
-        font-size: 1.7rem;
-        font-weight: 700;
-        letter-spacing: 1px;
-        color: #0d0d0d;
-    }
+<style lang="scss" scoped>
+    .login-container {
+        .title {
+            display: flex;
+            justify-content: center;
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: black;
+        }
 
-    .sub-title {
-        display: flex;
-        justify-content: center;
-        margin: 1rem 0;
-    }
+        .sub-title {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
 
-    .sub-title a {
-        margin-left: 5px;
-    }
+            a {
+                margin-left: 5px;
+            }
+        }
 
-    .login .login-form-button {
-        width: 100%;
-    }
-
-    .social-login .login-form-button {
-        width: 100%;
+        .login-form-button {
+            width: 100%;
+        }
     }
 </style>
-<style>
-    .login-container .ant-input {
-        margin: 0;
+<style lang="scss">
+    .login-container {
+        .ant-input {
+            margin: 0;
+        }
     }
 </style>
