@@ -29,6 +29,7 @@
                             </a-button>
                         </a-row>
                     </a-form-item>
+                    <a-divider style="font-weight: normal">or</a-divider>
                     <a-form-item class="social-login">
                         <a-row :gutter="8">
                             <a-col :span="12">
@@ -225,6 +226,7 @@
     .login-container {
         .ant-input {
             margin: 0;
+            font-size: 1.2rem;
         }
     }
 </style>
