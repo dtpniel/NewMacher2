@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 import { getField, updateField } from 'vuex-map-fields';
 // import global from './global.js';
 var dataIndex = {
@@ -245,7 +245,7 @@ export const getters = {
     return state.jobs
       .filter(x => {
         return (
-        
+
           ((filter.location.length == 0 || filter.location == 0) ||
             isPointInPolygon(x.lng, x.lat, filter.location)) &&
 
@@ -256,7 +256,7 @@ export const getters = {
           (filter.categoryId.length == 0 ||
             filter.categoryId.indexOf(x.categoryId) > -1) &&
           (
-            //no job type defined, take all 
+            //no job type defined, take all
             !(filter.freelance || filter.fullTime || filter.partTime || filter.fromHome || filter.internship || filter.temporary) ||
             (filter.freelance == x.freelance && filter.freelance) ||
             (filter.partTime == x.partTime && filter.partTime) ||
@@ -319,10 +319,7 @@ export const getters = {
   singleJob: state => { return state.singleJob }
 };
 
-
 export const actions = {
-
-
   async getJobs({ commit, state }) {
     return axios.post(process.env.baseApi + "/jobs/jobsList", { filter: state.filter })
       .then(jobs => {
@@ -383,7 +380,6 @@ export const actions = {
       }
       )
   },
-
 
   async getSingleJob({ commit, dispatch }, data) {
     return axios.post(process.env.baseApi + "/jobs/singleJob", data)

@@ -1,7 +1,7 @@
-const auth = require('./auth')
-const jobs = require('./jobs')
-const express = require('express')
-const app = express()
+const auth = require('./auth');
+const jobs = require('./jobs');
+const express = require('express');
+const app = express();
 
 // export the server middleware
 // Import API Routes
@@ -12,4 +12,4 @@ app.use(auth);
 module.exports = {
     path: '/api',
     handler: app
-  }
+};
